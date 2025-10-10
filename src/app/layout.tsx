@@ -54,8 +54,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn(abc_otto_variable_trial.variable, `antialiased`)}>
+    <html lang="en" className="h-full">
+      <body
+        className={cn(
+          abc_otto_variable_trial.variable,
+          `antialiased flex flex-col pt-4 gap-4 min-h-full`
+        )}
+      >
         {children}
       </body>
     </html>

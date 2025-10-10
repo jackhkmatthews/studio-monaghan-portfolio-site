@@ -179,7 +179,7 @@ export type AllSanitySchemaTypes = Link | Settings | SanityImagePaletteSwatch | 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == "settings"][0]
+// Query: *[_type == "settings"][0] {  ...,  'homepageImageDimenstions': homepageImage.asset->metadata.dimensions}
 export type SETTINGS_QUERYResult = {
   _id: string;
   _type: "settings";
@@ -215,12 +215,13 @@ export type SETTINGS_QUERYResult = {
     metadataBase?: string;
     _type: "image";
   };
+  homepageImageDimenstions: SanityImageDimensions | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"settings\"][0]": SETTINGS_QUERYResult;
+    "\n*[_type == \"settings\"][0] {\n  ...,\n  'homepageImageDimenstions': homepageImage.asset->metadata.dimensions\n}\n": SETTINGS_QUERYResult;
   }
 }

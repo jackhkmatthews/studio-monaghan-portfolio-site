@@ -1,24 +1,68 @@
+import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { SETTINGS_QUERY } from "@/sanity/queries";
 import { textClasses } from "@/styles/textClasses";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 
 export default async function Home() {
   const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
+  const common = {
+    alt: settings?.homepageImage?.alt || "",
+    sizes: "(width <= 750px) 100vw, 75vw",
+  };
+  const {
+    props: { srcSet: desktop },
+  } = getImageProps({
+    ...common,
+    width: settings?.homepageImageDimenstions?.width,
+    height: settings?.homepageImageDimenstions?.height,
+    quality: 80,
+    src: urlFor(settings?.homepageImage || {}).url(),
+  });
+  const {
+    props: { srcSet: tablet },
+  } = getImageProps({
+    ...common,
+    width: 1000,
+    height: 1000,
+    quality: 70,
+    src: urlFor(settings?.homepageImage || {})
+      .width(1000)
+      .height(1000)
+      .crop("center")
+      .fit("crop")
+      .url(),
+  });
+  const {
+    props: { srcSet: mobile, ...rest },
+  } = getImageProps({
+    ...common,
+    width: 500,
+    height: 1000,
+    quality: 70,
+    src: urlFor(settings?.homepageImage || {})
+      .width(750)
+      .height(1334)
+      .crop("center")
+      .fit("crop")
+      .url(),
+  });
   return (
-    <div className="p-2 flex flex-col gap-4">
-      <p className={textClasses.body}>{settings?.description}</p>
+    <main className="flex flex-col gap-4 flex-1">
+      <p className={cn(textClasses.body, "px-2")}>{settings?.description}</p>
       {settings?.homepageImage ? (
-        <figure className="lg:col-span-4 flex flex-col gap-2 items-start">
-          <Image
-            src={urlFor(settings.homepageImage).width(1051).height(699).url()}
-            width={1051}
-            height={699}
-            alt=""
+        <picture className="flex-1 flex flex-col relative lg:px-2 lg:w-3/4 xl:w-2/3">
+          <source media="(width < 500px)" srcSet={mobile} />
+          <source media="(width < 750px)" srcSet={tablet} />
+          <source media="(width >= 750px)" srcSet={desktop} />
+          <img
+            {...rest}
+            alt={settings?.homepageImage?.alt || ""}
+            className="object-cover absolute inset-0 h-full w-full lg:relative"
           />
-        </figure>
+        </picture>
       ) : null}
-    </div>
+    </main>
   );
 }
