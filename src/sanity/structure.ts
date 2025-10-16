@@ -1,7 +1,35 @@
-import type {StructureResolver} from 'sanity/structure'
+import { CogIcon, DocumentTextIcon } from "@sanity/icons";
+import type { StructureBuilder, StructureResolver } from "sanity/structure";
+import pluralize from "pluralize-esm";
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
-export const structure: StructureResolver = (S) =>
+const DISABLED_TYPES = ["settings", "about"];
+
+export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
-    .title('Content')
-    .items(S.documentTypeListItems())
+    .title("Website Content")
+    .items([
+      ...S.documentTypeListItems()
+        // Remove the "assist.instruction.context" and "settings" content  from the list of content types
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()))
+        // Pluralize the title of each document type.  This is not required but just an option to consider.
+        .map((listItem) => {
+          return listItem.title(pluralize(listItem.getTitle() as string));
+        }),
+      // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
+      S.listItem()
+        .title("Settings")
+        .child(
+          S.document()
+            .schemaType("settings")
+            .documentId("settings")
+            .title("Settings")
+        )
+        .icon(CogIcon),
+      S.listItem()
+        .title("About")
+        .child(
+          S.document().schemaType("about").documentId("about").title("About")
+        )
+        .icon(DocumentTextIcon),
+    ]);

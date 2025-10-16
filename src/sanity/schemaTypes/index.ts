@@ -3,7 +3,8 @@ import { settings } from "./singletons/settings";
 import { link } from "./objects/link";
 import { blockContentType } from "./objects/block-content-type";
 import { projectType } from "./documents/project-type";
+import { about } from "./singletons/about";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [settings, link, blockContentType, projectType],
+  types: [settings, link, blockContentType, projectType, about],
 };

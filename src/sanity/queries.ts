@@ -4,6 +4,10 @@ export const SETTINGS_QUERY = defineQuery(`
 *[_type == "settings"][0]
 `);
 
+export const ABOUT_QUERY = defineQuery(`
+*[_type == "about"][0]
+`);
+
 export const PROJECTS_QUERY = defineQuery(`
 *[_type == "project"] | order(_createdAt desc) {
   _id,
