@@ -1,5 +1,6 @@
 export const textClasses = {
-  wordMark: "font-serif text-2xl md:text-4xl font-bold",
+  wordMark: "font-serif text-lg md:text-xl font-bold",
+  navLink: "font-serif text-lg md:text-xl",
   h1: "font-serif text-xl md:text-2xl font-bold",
   subtitle: "font-serif text-lg italic",
   body: "font-serif text-base",

@@ -10,7 +10,7 @@ export default async function WorkPage() {
   const { data: projects } = await sanityFetch({ query: PROJECTS_QUERY });
 
   return (
-    <main className="flex flex-col gap-6 flex-1 px-2 py-2">
+    <main className="flex flex-col gap-6 flex-1 px-2 py-2 lg:px-4">
       <h1 className={cn(textClasses.subtitle)}>Selected Projects</h1>
 
       {projects && projects.length > 0 && (

@@ -13,7 +13,7 @@ export default async function FrontendLayout({
   const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
   return (
     <>
-      <header className="px-2 flex justify-between items-center gap-4">
+      <header className="px-2 flex justify-between items-center gap-4 lg:px-4">
         <Link href="/" className={cn(textClasses.wordMark, "uppercase")}>
           {settings?.title}
         </Link>
@@ -22,7 +22,7 @@ export default async function FrontendLayout({
             <li>
               <Link
                 className={cn(
-                  textClasses.body,
+                  textClasses.navLink,
                   "hover:underline underline-offset-3"
                 )}
                 href="/work"
