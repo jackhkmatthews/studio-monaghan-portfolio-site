@@ -1,7 +1,9 @@
 import { type SchemaTypeDefinition } from "sanity";
 import { settings } from "./singletons/settings";
 import { link } from "./objects/link";
+import { blockContentType } from "./objects/block-content-type";
+import { projectType } from "./documents/project-type";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [settings, link],
+  types: [settings, link, blockContentType, projectType],
 };

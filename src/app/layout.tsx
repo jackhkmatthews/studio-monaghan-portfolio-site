@@ -58,7 +58,7 @@ export default function RootLayout({
       <body
         className={cn(
           abc_otto_variable_trial.variable,
-          `antialiased flex flex-col pt-4 gap-4 min-h-full`
+          `antialiased flex flex-col pt-4 gap-6 min-h-full`
         )}
       >
         {children}

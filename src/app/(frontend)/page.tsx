@@ -4,6 +4,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { SETTINGS_QUERY } from "@/sanity/queries";
 import { textClasses } from "@/styles/textClasses";
 import { getImageProps } from "next/image";
+import { getImageDimensions } from "@sanity/asset-utils";
 
 export default async function Home() {
   const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
@@ -11,12 +12,13 @@ export default async function Home() {
     alt: settings?.homepageImage?.alt || "",
     sizes: "(width <= 750px) 100vw, 75vw",
   };
+  const dimensions = getImageDimensions(settings?.homepageImage?.asset || "");
   const {
     props: { srcSet: desktop },
   } = getImageProps({
     ...common,
-    width: settings?.homepageImageDimenstions?.width,
-    height: settings?.homepageImageDimenstions?.height,
+    width: dimensions?.width,
+    height: dimensions?.height,
     quality: 80,
     src: urlFor(settings?.homepageImage || {}).url(),
   });
