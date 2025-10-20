@@ -57,7 +57,7 @@ export default async function RootLayout({
 }>) {
   const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full overflow-y-scroll">
       <body
         className={cn(
           abc_otto_variable_trial.variable,

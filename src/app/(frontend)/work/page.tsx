@@ -11,7 +11,7 @@ export default async function WorkPage() {
 
   return (
     <main className="flex flex-col gap-6 flex-1 px-2 py-2 lg:px-4">
-      <h1 className={cn(textClasses.subtitle)}>Selected Projects</h1>
+      <h1 className={cn(textClasses.h2)}>Selected Projects</h1>
 
       {projects && projects.length > 0 && (
         <ul className="grid gap-8">

@@ -45,7 +45,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       )}
 
       {project.body && (
-        <div className="prose prose-lg px-2 lg:px-4 max-w-prose">
+        <div className={cn(textClasses.portableText, "px-2 lg:px-4")}>
           <PortableText value={project.body} components={components} />
         </div>
       )}
