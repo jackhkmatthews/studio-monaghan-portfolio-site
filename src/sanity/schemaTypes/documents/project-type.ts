@@ -37,7 +37,7 @@ export const projectType = defineType({
       name: "coverImage",
       title: "Cover Image",
       description:
-        "This image will be used as the cover image for the project. If you choose to add it to the show case projects, this is the image displayed in the list within the homepage.",
+        "Used on projects list page ans as sharing image on social media.",
       type: "image",
       options: {
         hotspot: true,
@@ -59,8 +59,31 @@ export const projectType = defineType({
       ],
     }),
     defineField({
-      name: "body",
-      type: "blockContent",
+      name: "sections",
+      title: "Content Sections",
+      description:
+        "Ordered content. Add text blocks or image galleries (1, 2, or 6 images).",
+      type: "array",
+      of: [
+        { type: "gallerySection" },
+        {
+          type: "object",
+          name: "textBlock",
+          fields: [{ name: "content", type: "blockContent" }],
+          preview: {
+            select: {
+              content: "content",
+            },
+            prepare({ content }) {
+              return {
+                title: "Text Block",
+                subtitle: content[0]?.children[0]?.text || "No content",
+              };
+            },
+          },
+        },
+      ],
+      validation: (rule) => rule.min(1),
     }),
   ],
 });

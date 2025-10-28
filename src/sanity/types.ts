@@ -100,24 +100,48 @@ export type Project = {
     alt?: string;
     _type: "image";
   };
-  body?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
+  sections?: Array<{
     _key: string;
-  } | {
+  } & GallerySection | {
+    content?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }>;
+    _type: "textBlock";
+    _key: string;
+  }>;
+};
+
+export type GallerySection = {
+  _type: "gallerySection";
+  images?: Array<{
     asset?: {
       _ref: string;
       _type: "reference";
@@ -315,7 +339,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Home | About | Project | BlockContent | Link | Settings | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Home | About | Project | GallerySection | BlockContent | Link | Settings | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/queries.ts
 // Variable: SETTINGS_QUERY
@@ -449,7 +473,7 @@ export type PROJECTS_QUERYResult = Array<{
   } | null;
 }>;
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  coverImage {    ...,    asset-> {      ...,      metadata    }  },  body}
+// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  coverImage {    ...,    asset-> {      ...,      metadata    }  },  sections[] {    ...,    _type == "gallerySection" => {      _type,      images[] {        ...,        asset-> { ..., metadata }      }    }  }}
 export type PROJECT_QUERYResult = {
   _id: string;
   title: string | null;
@@ -484,35 +508,72 @@ export type PROJECT_QUERYResult = {
     alt?: string;
     _type: "image";
   } | null;
-  body: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
+  sections: Array<{
     _key: string;
+    _type: "gallerySection";
+    images: Array<{
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash?: string;
+        extension?: string;
+        mimeType?: string;
+        size?: number;
+        assetId?: string;
+        uploadId?: string;
+        path?: string;
+        url?: string;
+        metadata: SanityImageMetadata | null;
+        source?: SanityAssetSourceData;
+      } | null;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }> | null;
   } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    content?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }>;
+    _type: "textBlock";
     _key: string;
   }> | null;
 } | null;
@@ -525,6 +586,6 @@ declare module "@sanity/client" {
     "\n*[_type == \"home\"][0]\n": HOME_QUERYResult;
     "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  }\n}\n": PROJECTS_QUERYResult;
-    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  },\n  body\n}\n": PROJECT_QUERYResult;
+    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  },\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      _type,\n      images[] {\n        ...,\n        asset-> { ..., metadata }\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
   }
 }

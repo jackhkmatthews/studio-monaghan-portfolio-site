@@ -12,6 +12,8 @@ export const ABOUT_QUERY = defineQuery(`
 *[_type == "about"][0]
 `);
 
+// TODO: remove dimensions from the query, use getImageDimensions to get the dimensions instead
+
 export const PROJECTS_QUERY = defineQuery(`
 *[_type == "project"] | order(_createdAt desc) {
   _id,
@@ -41,6 +43,15 @@ export const PROJECT_QUERY = defineQuery(`
       metadata
     }
   },
-  body
+  sections[] {
+    ...,
+    _type == "gallerySection" => {
+      _type,
+      images[] {
+        ...,
+        asset-> { ..., metadata }
+      }
+    }
+  }
 }
 `);
