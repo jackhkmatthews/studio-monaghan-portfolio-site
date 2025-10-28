@@ -6,5 +6,5 @@ export const textClasses = {
   navLink: "font-serif text-base md:text-lg",
   body: "font-serif text-base",
   portableText: "prose lg:prose-lg max-w-[50ch] font-serif",
-  portableTextFooter: "prose-sm font-serif leading-none",
+  portableTextFooter: "text-xs prose-sm font-serif leading-none",
 } as const;

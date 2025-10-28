@@ -9,6 +9,7 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SETTINGS_QUERY } from "@/sanity/queries";
 import Link from "next/link";
 import { textClasses } from "@/styles/textClasses";
+import { PortableText } from "next-sanity";
 
 /**
  * Generate metadata for the page.
@@ -101,7 +102,12 @@ export default async function RootLayout({
           </nav>
         </header>
         {children}
-        {/* <footer></footer> */}
+        <footer
+          className={cn(textClasses.portableTextFooter, "px-2 lg:px-4 pb-6")}
+          style={{ lineHeight: "1" }}
+        >
+          <PortableText value={settings?.legal || []} />
+        </footer>
         <SanityLive />
       </body>
     </html>
