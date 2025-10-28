@@ -13,6 +13,28 @@
  */
 
 // Source: schema.json
+export type Home = {
+  _id: string;
+  _type: "home";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type About = {
   _id: string;
   _type: "about";
@@ -189,19 +211,6 @@ export type Settings = {
   _rev: string;
   title?: string;
   description?: string;
-  homepageImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
   ogImage?: {
     asset?: {
       _ref: string;
@@ -336,7 +345,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = About | Project | BlockContent | Link | Settings | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Home | About | Project | BlockContent | Link | Settings | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/queries.ts
 // Variable: SETTINGS_QUERY
@@ -349,19 +358,6 @@ export type SETTINGS_QUERYResult = {
   _rev: string;
   title?: string;
   description?: string;
-  homepageImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
   ogImage?: {
     asset?: {
       _ref: string;
@@ -374,6 +370,29 @@ export type SETTINGS_QUERYResult = {
     crop?: SanityImageCrop;
     alt?: string;
     metadataBase?: string;
+    _type: "image";
+  };
+} | null;
+// Variable: HOME_QUERY
+// Query: *[_type == "home"][0]
+export type HOME_QUERYResult = {
+  _id: string;
+  _type: "home";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
 } | null;
@@ -563,6 +582,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n*[_type == \"settings\"][0]\n": SETTINGS_QUERYResult;
+    "\n*[_type == \"home\"][0]\n": HOME_QUERYResult;
     "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  }\n}\n": PROJECTS_QUERYResult;
     "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  },\n  body\n}\n": PROJECT_QUERYResult;

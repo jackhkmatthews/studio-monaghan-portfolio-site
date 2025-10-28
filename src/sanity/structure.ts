@@ -2,7 +2,7 @@ import { CogIcon, DocumentTextIcon } from "@sanity/icons";
 import type { StructureBuilder, StructureResolver } from "sanity/structure";
 import pluralize from "pluralize-esm";
 
-const DISABLED_TYPES = ["settings", "about"];
+const DISABLED_TYPES = ["settings", "about", "home"];
 
 export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
@@ -31,5 +31,9 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
         .child(
           S.document().schemaType("about").documentId("about").title("About")
         )
+        .icon(DocumentTextIcon),
+      S.listItem()
+        .title("Home")
+        .child(S.document().schemaType("home").documentId("home").title("Home"))
         .icon(DocumentTextIcon),
     ]);

@@ -1,18 +1,18 @@
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
-import { SETTINGS_QUERY } from "@/sanity/queries";
 import { textClasses } from "@/styles/textClasses";
 import { getImageProps } from "next/image";
 import { getImageDimensions } from "@sanity/asset-utils";
+import { HOME_QUERY } from "@/sanity/queries";
 
 export default async function Home() {
-  const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
+  const { data: home } = await sanityFetch({ query: HOME_QUERY });
   const common = {
-    alt: settings?.homepageImage?.alt || "",
+    alt: home?.image?.alt || "",
     sizes: "(width <= 750px) 100vw, 75vw",
   };
-  const dimensions = getImageDimensions(settings?.homepageImage?.asset || "");
+  const dimensions = getImageDimensions(home?.image?.asset || "");
   const {
     props: { srcSet: desktop },
   } = getImageProps({
@@ -20,7 +20,7 @@ export default async function Home() {
     width: dimensions?.width,
     height: dimensions?.height,
     quality: 80,
-    src: urlFor(settings?.homepageImage || {}).url(),
+    src: urlFor(home?.image || {}).url(),
   });
   const {
     props: { srcSet: tablet },
@@ -29,7 +29,7 @@ export default async function Home() {
     width: 1000,
     height: 1000,
     quality: 70,
-    src: urlFor(settings?.homepageImage || {})
+    src: urlFor(home?.image || {})
       .width(1000)
       .height(1000)
       .crop("center")
@@ -43,7 +43,7 @@ export default async function Home() {
     width: 500,
     height: 1000,
     quality: 70,
-    src: urlFor(settings?.homepageImage || {})
+    src: urlFor(home?.image || {})
       .width(750)
       .height(1334)
       .crop("center")
@@ -53,16 +53,16 @@ export default async function Home() {
   return (
     <main className="flex flex-col gap-4 flex-1">
       <p className={cn(textClasses.body, "px-2 lg:px-4")}>
-        {settings?.description}
+        {home?.description}
       </p>
-      {settings?.homepageImage ? (
+      {home?.image ? (
         <picture className="flex-1 flex flex-col relative lg:px-4 lg:w-3/4 xl:w-2/3">
           <source media="(width < 500px)" srcSet={mobile} />
           <source media="(width < 750px)" srcSet={tablet} />
           <source media="(width >= 750px)" srcSet={desktop} />
           <img
             {...rest}
-            alt={settings?.homepageImage?.alt || ""}
+            alt={home?.image?.alt || ""}
             className="object-cover absolute inset-0 h-full w-full lg:relative"
           />
         </picture>

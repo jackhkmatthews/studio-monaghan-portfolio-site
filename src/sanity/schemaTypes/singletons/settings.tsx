@@ -15,43 +15,19 @@ export const settings = defineType({
   fields: [
     defineField({
       name: "title",
-      description: "This field is the title of your website.",
       title: "Title",
+      description: "Displayed on social cards and search engine results.",
       type: "string",
       initialValue: initialValues.title,
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "description",
-      description: "Homepage introduction",
       title: "Description",
+      description: "Displayed on social cards and search engine results.",
       type: "string",
       initialValue: initialValues.description,
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "homepageImage",
-      description: "Homepage image",
-      title: "Homepage Image",
-      type: "image",
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const parent = context?.parent as { asset?: { _ref?: string } };
-
-          return !value && parent?.asset?._ref
-            ? "Alt text is required when an image is present"
-            : true;
-        }),
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        defineField({
-          name: "alt",
-          type: "string",
-          title: "Alternative text",
-        }),
-      ],
     }),
     defineField({
       name: "ogImage",
