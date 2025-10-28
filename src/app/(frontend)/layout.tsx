@@ -64,13 +64,17 @@ export default async function RootLayout({
           `antialiased min-h-full flex flex-col pt-4 gap-6`
         )}
       >
-        <header className="px-2 flex justify-between items-center gap-4 lg:px-4">
-          <Link href="/" className={cn(textClasses.wordMark, "uppercase")}>
+        <header className="px-2 flex justify-between items-center gap-2 lg:px-4">
+          <Link
+            href="/"
+            className={cn(textClasses.wordMark, "uppercase")}
+            style={{ lineHeight: "1" }}
+          >
             {settings?.title}
           </Link>
 
           <nav>
-            <ul className="flex gap-4">
+            <ul className="flex gap-2 lg:gap-8">
               <li>
                 <Link
                   className={cn(
