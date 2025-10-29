@@ -62,10 +62,10 @@ export default async function RootLayout({
       <body
         className={cn(
           abc_otto_variable_trial.variable,
-          `antialiased min-h-full flex flex-col pt-4 gap-6`
+          `antialiased min-h-full flex flex-col pt-4 gap-2 lg:pt-8`
         )}
       >
-        <header className="px-2 flex justify-between items-center gap-2 lg:px-4">
+        <header className="px-2 flex justify-between items-center gap-2 lg:px-8">
           <Link
             href="/"
             className={cn(textClasses.wordMark, "uppercase")}
@@ -103,7 +103,7 @@ export default async function RootLayout({
         </header>
         {children}
         <footer
-          className={cn(textClasses.portableTextFooter, "px-2 lg:px-4 pb-6")}
+          className={cn(textClasses.portableTextFooter, "px-2 lg:px-8 pb-6")}
           style={{ lineHeight: "1" }}
         >
           <PortableText value={settings?.legal || []} />

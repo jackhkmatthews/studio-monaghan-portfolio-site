@@ -51,12 +51,12 @@ export default async function Home() {
       .url(),
   });
   return (
-    <main className="flex flex-col gap-4 flex-1">
-      <p className={cn(textClasses.body, "px-2 lg:px-4")}>
+    <main className="flex flex-col gap-8 flex-1">
+      <p className={cn(textClasses.body, "px-2 lg:px-8")}>
         {home?.description}
       </p>
       {home?.image ? (
-        <picture className="flex-1 flex flex-col relative lg:px-4 lg:w-3/4 xl:w-2/3">
+        <picture className="flex-1 flex flex-col relative lg:px-8 lg:w-3/4 xl:w-2/3">
           <source media="(width < 500px)" srcSet={mobile} />
           <source media="(width < 750px)" srcSet={tablet} />
           <source media="(width >= 750px)" srcSet={desktop} />

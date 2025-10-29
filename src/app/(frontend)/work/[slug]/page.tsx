@@ -26,10 +26,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="flex flex-col gap-4 flex-1 py-2 pb-10 lg:pt-10 lg:gap-8">
-      <h1 className={cn(textClasses.h1, "px-2 lg:px-4")}>{project.title}</h1>
+      <h1 className={cn(textClasses.h1, "px-2 lg:px-8")}>{project.title}</h1>
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
-        <div className="grid grid-cols-1 gap-x-4 gap-y-8 px-2 lg:px-4 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-4 gap-y-8 px-2 lg:px-8 lg:grid-cols-4">
           {project.sections.map((section) => {
             const key = section._key;
             // Gallery section
@@ -68,7 +68,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   key={key}
                   className={cn(
                     textClasses.portableText,
-                    "col-span-full lg:col-span-2 lg:col-start-3"
+                    "col-span-full lg:col-span-2 lg:col-start-3 max-w-prose"
                   )}
                 >
                   <PortableText
