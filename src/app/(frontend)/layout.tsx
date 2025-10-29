@@ -103,7 +103,10 @@ export default async function RootLayout({
         </header>
         {children}
         <footer
-          className={cn(textClasses.portableTextFooter, "px-2 lg:px-8 pb-6")}
+          className={cn(
+            textClasses.portableTextFooter,
+            "px-2 lg:px-8 pb-2 lg:pb-8"
+          )}
           style={{ lineHeight: "1" }}
         >
           <PortableText value={settings?.legal || []} />
