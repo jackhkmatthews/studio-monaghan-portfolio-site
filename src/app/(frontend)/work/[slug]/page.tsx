@@ -7,7 +7,6 @@ import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getImageAsset } from "@sanity/asset-utils";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -32,31 +31,53 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 px-2 lg:px-8 lg:grid-cols-4">
-          {project.sections.map((section) => {
+          {project.sections.map((section, index) => {
             const key = section._key;
             // Gallery section
             // TODO: be oppionated about the image aspect ratios
             if (section && section._type === "gallerySection") {
               const images = section.images || [];
               const count = images.length;
-              const width = count === 1 ? 1200 : count === 2 ? 600 : 400;
+              let aspectRatio = 0;
+              let width = 0;
+              if (count === 1) {
+                // 1 full width image
+                aspectRatio = 2 / 1;
+                width = 3000;
+              } else if (count === 2) {
+                // 2 images side by side
+                aspectRatio = 3 / 2;
+                width = 1500;
+              } else {
+                // 4 images side by side
+                aspectRatio = 2 / 3;
+                width = 1000;
+              }
+              const height = Math.floor(width / aspectRatio);
               return images.map((img) => {
                 if (!img || !img.asset) return null;
-                const imageAsset = getImageAsset(img.asset);
-                const aspectRatio = imageAsset.metadata.dimensions.aspectRatio;
-                const height = Math.floor(width / aspectRatio);
+                const url = urlFor(img)
+                  .width(width)
+                  .height(height)
+                  // .quality(85)
+                  .auto("format")
+                  .url();
+
+                if (index === 0) {
+                  console.log(img, url);
+                }
                 return (
                   <Image
                     key={img._key}
-                    src={urlFor(img)
-                      .width(width)
-                      .height(height)
-                      .quality(85)
-                      .auto("format")
-                      .url()}
+                    src={url}
                     alt={img?.alt || project.title || ""}
                     width={width}
                     height={height}
+                    placeholder={
+                      img.lqip
+                        ? `data:image/${img.lqip.split("data:image/")[1]}`
+                        : "empty"
+                    }
                     className={cn("w-full col-span-full", {
                       "lg:col-span-2": images.length === 2,
                       "lg:col-span-1": images.length === 4,

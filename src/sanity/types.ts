@@ -369,7 +369,7 @@ export type SETTINGS_QUERYResult = {
   legal?: BlockContent;
 } | null;
 // Variable: HOME_QUERY
-// Query: *[_type == "home"][0]
+// Query: *[_type == "home"][0] {  ...,  image {    ...,    "blurHash": asset->metadata.blurHash,    "lqip": asset->metadata.lqip,  }}
 export type HOME_QUERYResult = {
   _id: string;
   _type: "home";
@@ -377,7 +377,7 @@ export type HOME_QUERYResult = {
   _updatedAt: string;
   _rev: string;
   description?: string;
-  image?: {
+  image: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -389,7 +389,9 @@ export type HOME_QUERYResult = {
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
-  };
+    blurHash: string | null;
+    lqip: string | null;
+  } | null;
 } | null;
 // Variable: ABOUT_QUERY
 // Query: *[_type == "about"][0]
@@ -436,110 +438,53 @@ export type ABOUT_QUERYResult = {
   }>;
 } | null;
 // Variable: PROJECTS_QUERY
-// Query: *[_type == "project"] | order(_createdAt desc) {  _id,  title,  slug,  overview,  coverImage {    ...,    asset-> {      ...,      metadata    }  }}
+// Query: *[_type == "project"] | order(_createdAt desc) {  _id,  title,  slug,  overview,  coverImage {    ...,    "blurHash": asset->metadata.blurHash,    "lqip": asset->metadata.lqip,  }}
 export type PROJECTS_QUERYResult = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
   overview: string | null;
   coverImage: {
-    asset: {
-      _id: string;
-      _type: "sanity.imageAsset";
-      _createdAt: string;
-      _updatedAt: string;
-      _rev: string;
-      originalFilename?: string;
-      label?: string;
-      title?: string;
-      description?: string;
-      altText?: string;
-      sha1hash?: string;
-      extension?: string;
-      mimeType?: string;
-      size?: number;
-      assetId?: string;
-      uploadId?: string;
-      path?: string;
-      url?: string;
-      metadata: SanityImageMetadata | null;
-      source?: SanityAssetSourceData;
-    } | null;
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+    blurHash: string | null;
+    lqip: string | null;
   } | null;
 }>;
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  coverImage {    ...,    asset-> {      ...,      metadata    }  },  sections[] {    ...,    _type == "gallerySection" => {      _type,      images[] {        ...,        asset-> { ..., metadata }      }    }  }}
+// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  sections[] {    ...,    _type == "gallerySection" => {      ...,      images[] {        ...,        "blurHash": asset->metadata.blurHash,        "lqip": asset->metadata.lqip,      }    }  }}
 export type PROJECT_QUERYResult = {
   _id: string;
   title: string | null;
   slug: Slug | null;
   overview: string | null;
-  coverImage: {
-    asset: {
-      _id: string;
-      _type: "sanity.imageAsset";
-      _createdAt: string;
-      _updatedAt: string;
-      _rev: string;
-      originalFilename?: string;
-      label?: string;
-      title?: string;
-      description?: string;
-      altText?: string;
-      sha1hash?: string;
-      extension?: string;
-      mimeType?: string;
-      size?: number;
-      assetId?: string;
-      uploadId?: string;
-      path?: string;
-      url?: string;
-      metadata: SanityImageMetadata | null;
-      source?: SanityAssetSourceData;
-    } | null;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
   sections: Array<{
     _key: string;
     _type: "gallerySection";
     images: Array<{
-      asset: {
-        _id: string;
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash?: string;
-        extension?: string;
-        mimeType?: string;
-        size?: number;
-        assetId?: string;
-        uploadId?: string;
-        path?: string;
-        url?: string;
-        metadata: SanityImageMetadata | null;
-        source?: SanityAssetSourceData;
-      } | null;
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       alt?: string;
       _type: "image";
       _key: string;
+      blurHash: string | null;
+      lqip: string | null;
     }> | null;
   } | {
     content?: Array<{
@@ -583,9 +528,9 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n*[_type == \"settings\"][0]\n": SETTINGS_QUERYResult;
-    "\n*[_type == \"home\"][0]\n": HOME_QUERYResult;
+    "\n*[_type == \"home\"][0] {\n  ...,\n  image {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": HOME_QUERYResult;
     "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
-    "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  }\n}\n": PROJECTS_QUERYResult;
-    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    asset-> {\n      ...,\n      metadata\n    }\n  },\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      _type,\n      images[] {\n        ...,\n        asset-> { ..., metadata }\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
+    "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": PROJECTS_QUERYResult;
+    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      ...,\n      images[] {\n        ...,\n        \"blurHash\": asset->metadata.blurHash,\n        \"lqip\": asset->metadata.lqip,\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
   }
 }

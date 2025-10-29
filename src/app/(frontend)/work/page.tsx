@@ -13,41 +13,44 @@ export default async function WorkPage() {
     <main className="flex flex-col gap-6 flex-1 px-2 py-8 lg:py-10 lg:px-8">
       {projects && projects.length > 0 && (
         <ul className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {[...projects, ...projects, ...projects, ...projects].map(
-            (project, index) => (
-              <li key={project._id + index.toString()}>
-                <article
-                  key={project._id}
-                  className="flex flex-col gap-2 items-start relative"
-                >
-                  {project.coverImage && (
-                    <Image
-                      className="w-full h-auto"
-                      src={urlFor(project.coverImage)
-                        .width(600)
-                        .height(400)
-                        .quality(80)
-                        .auto("format")
-                        .url()}
-                      alt={project.coverImage.alt || ""}
-                      width={600}
-                      height={400}
-                    />
+          {projects.map((project, index) => (
+            <li key={project._id + index.toString()}>
+              <article
+                key={project._id}
+                className="flex flex-col gap-2 items-start relative"
+              >
+                {project.coverImage && (
+                  <Image
+                    className="w-full h-auto"
+                    placeholder={
+                      project.coverImage.lqip
+                        ? `data:image/${project.coverImage.lqip.split("data:image/")[1]}`
+                        : "empty"
+                    }
+                    src={urlFor(project.coverImage)
+                      .width(600)
+                      .height(400)
+                      .quality(80)
+                      .auto("format")
+                      .url()}
+                    alt={project.coverImage.alt || ""}
+                    width={600}
+                    height={400}
+                  />
+                )}
+                <Link
+                  href={`/work/${project.slug?.current}`}
+                  className={cn(
+                    textClasses.body,
+                    "underline-offset-4 hover:underline"
                   )}
-                  <Link
-                    href={`/work/${project.slug?.current}`}
-                    className={cn(
-                      textClasses.body,
-                      "underline-offset-4 hover:underline"
-                    )}
-                  >
-                    {project.title}
-                    <span className="absolute inset-0 block" />
-                  </Link>
-                </article>
-              </li>
-            )
-          )}
+                >
+                  {project.title}
+                  <span className="absolute inset-0 block" />
+                </Link>
+              </article>
+            </li>
+          ))}
         </ul>
       )}
     </main>

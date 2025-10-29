@@ -5,14 +5,19 @@ export const SETTINGS_QUERY = defineQuery(`
 `);
 
 export const HOME_QUERY = defineQuery(`
-*[_type == "home"][0]
+*[_type == "home"][0] {
+  ...,
+  image {
+    ...,
+    "blurHash": asset->metadata.blurHash,
+    "lqip": asset->metadata.lqip,
+  }
+}
 `);
 
 export const ABOUT_QUERY = defineQuery(`
 *[_type == "about"][0]
 `);
-
-// TODO: remove dimensions from the query, use getImageDimensions to get the dimensions instead
 
 export const PROJECTS_QUERY = defineQuery(`
 *[_type == "project"] | order(_createdAt desc) {
@@ -22,10 +27,8 @@ export const PROJECTS_QUERY = defineQuery(`
   overview,
   coverImage {
     ...,
-    asset-> {
-      ...,
-      metadata
-    }
+    "blurHash": asset->metadata.blurHash,
+    "lqip": asset->metadata.lqip,
   }
 }
 `);
@@ -36,20 +39,14 @@ export const PROJECT_QUERY = defineQuery(`
   title,
   slug,
   overview,
-  coverImage {
-    ...,
-    asset-> {
-      ...,
-      metadata
-    }
-  },
   sections[] {
     ...,
     _type == "gallerySection" => {
-      _type,
+      ...,
       images[] {
         ...,
-        asset-> { ..., metadata }
+        "blurHash": asset->metadata.blurHash,
+        "lqip": asset->metadata.lqip,
       }
     }
   }

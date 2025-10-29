@@ -56,6 +56,7 @@ export default async function Home() {
         {home?.description}
       </p>
       {home?.image ? (
+        // TODO: add placeholder with lqip
         <picture className="flex-1 flex flex-col relative lg:px-8 lg:w-3/4 xl:w-2/3">
           <source media="(width < 500px)" srcSet={mobile} />
           <source media="(width < 750px)" srcSet={tablet} />
