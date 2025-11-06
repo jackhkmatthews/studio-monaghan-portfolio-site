@@ -20,6 +20,15 @@ export default async function AboutPage() {
           </div>
         </section>
       ))}
+      <footer
+        className={cn(
+          textClasses.portableTextFooter,
+          "col-span-full max-w-prose lg:col-start-2 py-6 lg:py-10"
+        )}
+        style={{ lineHeight: "1" }}
+      >
+        <PortableText value={about?.legal || []} />
+      </footer>
     </main>
   );
 }

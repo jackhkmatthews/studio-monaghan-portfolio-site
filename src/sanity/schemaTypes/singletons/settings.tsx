@@ -67,12 +67,6 @@ export const settings = defineType({
         }),
       ],
     }),
-    defineField({
-      name: "legal",
-      title: "Legal",
-      type: "blockContent",
-      description: "Text to display in the legal footer",
-    }),
   ],
   preview: {
     prepare() {
