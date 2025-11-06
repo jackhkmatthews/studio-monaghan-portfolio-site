@@ -30,7 +30,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </h1>
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
-        <div className="grid grid-cols-1 gap-x-4 gap-y-8 px-2 lg:px-8 lg:grid-cols-4">
+        <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-2 lg:px-8 grid-cols-4">
           {project.sections.map((section, index) => {
             const key = section._key;
             // Gallery section
@@ -78,9 +78,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                         ? `data:image/${img.lqip.split("data:image/")[1]}`
                         : "empty"
                     }
-                    className={cn("w-full col-span-full", {
-                      "lg:col-span-2": images.length === 2,
-                      "lg:col-span-1": images.length === 4,
+                    className={cn("w-full", {
+                      "col-span-full": images.length === 1,
+                      "col-span-2": images.length === 2,
+                      "col-span-1": images.length === 4,
                     })}
                   />
                 );
