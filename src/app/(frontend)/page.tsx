@@ -5,6 +5,7 @@ import { textClasses } from "@/styles/textClasses";
 import { getImageProps } from "next/image";
 import { getImageDimensions } from "@sanity/asset-utils";
 import { HOME_QUERY } from "@/sanity/queries";
+import { ClientImage } from "@/components/client-image";
 
 export default async function Home() {
   const { data: home } = await sanityFetch({ query: HOME_QUERY });
@@ -51,17 +52,17 @@ export default async function Home() {
       .url(),
   });
   return (
-    <main className="flex flex-col gap-8 flex-1">
+    <main className="flex flex-col gap-8 flex-1 pb-2 lg:pb-8">
       <p className={cn(textClasses.body, "px-2 lg:px-8")}>
         {home?.description}
       </p>
       {home?.image ? (
         // TODO: add placeholder with lqip
-        <picture className="flex-1 flex flex-col relative lg:px-8 lg:w-3/4 xl:w-2/3">
+        <picture className="flex-1 flex flex-col relative mx-2 lg:px-8 lg:w-full lg:mx-0">
           <source media="(width < 500px)" srcSet={mobile} />
           <source media="(width < 750px)" srcSet={tablet} />
           <source media="(width >= 750px)" srcSet={desktop} />
-          <img
+          <ClientImage
             {...rest}
             alt={home?.image?.alt || ""}
             className="object-cover absolute inset-0 h-full w-full lg:relative"

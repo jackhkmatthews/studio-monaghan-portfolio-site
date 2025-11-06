@@ -1,12 +1,12 @@
-import Image from "next/image";
 import { PortableTextComponents } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
+import { ClientImage } from "@/components/client-image";
 
 export const components: PortableTextComponents = {
   types: {
     image: (props) =>
       props.value ? (
-        <Image
+        <ClientImage
           className="rounded-lg not-prose w-full h-auto"
           src={urlFor(props.value)
             .width(600)

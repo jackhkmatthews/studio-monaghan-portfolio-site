@@ -5,8 +5,8 @@ import { textClasses } from "@/styles/textClasses";
 import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import { ClientImage } from "@/components/client-image";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -67,7 +67,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   console.log(img, url);
                 }
                 return (
-                  <Image
+                  <ClientImage
                     key={img._key}
                     src={url}
                     alt={img?.alt || project.title || ""}

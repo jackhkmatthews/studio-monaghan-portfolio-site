@@ -4,7 +4,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import Image from "next/image";
+import { ClientImage } from "@/components/client-image";
 
 export default async function WorkPage() {
   const { data: projects } = await sanityFetch({ query: PROJECTS_QUERY });
@@ -20,7 +20,7 @@ export default async function WorkPage() {
                 className="flex flex-col gap-2 items-start relative"
               >
                 {project.coverImage && (
-                  <Image
+                  <ClientImage
                     className="w-full h-auto"
                     placeholder={
                       project.coverImage.lqip
