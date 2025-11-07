@@ -33,7 +33,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <main className="flex flex-col gap-4 flex-1 py-8 lg:py-10 lg:gap-8">
+    <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
       <h1 className={cn(textClasses.h1, "px-2 lg:px-8 lg:absolute")}>
         {project.title}
       </h1>
