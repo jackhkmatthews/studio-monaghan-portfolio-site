@@ -42,6 +42,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-serif: var(--font-abco-otto-variable-trial);
+  --font-wordmark: var(--font-annexxus-regular-demo);
 }
 
 :root {

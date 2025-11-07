@@ -8,7 +8,7 @@ export default async function AboutPage() {
   const { data: about } = await sanityFetch({ query: ABOUT_QUERY });
 
   return (
-    <main className="gap-6 flex-1 grid grid-cols-1 px-2 lg:px-8 lg:grid-cols-[1fr_1fr] py-8 lg:py-10 lg:gap-x-20">
+    <main className="gap-6 flex-1 grid grid-cols-1 px-2 lg:px-8 lg:grid-cols-[1fr_1fr] pb-8 lg:pb-10 lg:gap-x-20">
       {about?.section?.map((section) => (
         <section
           key={section._key}

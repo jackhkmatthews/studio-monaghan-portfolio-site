@@ -11,7 +11,8 @@ export default async function Home() {
   const { data: home } = await sanityFetch({ query: HOME_QUERY });
   const common = {
     alt: home?.image?.alt || "",
-    sizes: "(width <= 750px) 100vw, 75vw",
+    // TODO: on mobile, should this be like 200vw?
+    sizes: "100vw",
   };
   const dimensions = getImageDimensions(home?.image?.asset || "");
   const {
@@ -20,7 +21,6 @@ export default async function Home() {
     ...common,
     width: dimensions?.width,
     height: dimensions?.height,
-    quality: 80,
     src: urlFor(home?.image || {}).url(),
   });
   const {
@@ -29,7 +29,6 @@ export default async function Home() {
     ...common,
     width: 1000,
     height: 1000,
-    quality: 70,
     src: urlFor(home?.image || {})
       .width(1000)
       .height(1000)
@@ -37,25 +36,26 @@ export default async function Home() {
       .fit("crop")
       .url(),
   });
-  const {
-    props: { srcSet: mobile, ...rest },
-  } = getImageProps({
+  // Can't use ..rest from getImageProps because it already optimises URLs which then happens again inside the ClientImage component e.g. double /_next/image/_next/image/ urls
+  const mobileImgProps = {
     ...common,
-    width: 500,
-    height: 1000,
-    quality: 70,
+    priority: true,
+    width: 750,
+    height: 1334,
     src: urlFor(home?.image || {})
       .width(750)
       .height(1334)
       .crop("center")
       .fit("crop")
       .url(),
+  };
+  const {
+    props: { srcSet: mobile },
+  } = getImageProps({
+    ...mobileImgProps,
   });
   return (
     <main className="flex flex-col gap-8 flex-1 pb-2 lg:pb-8">
-      <p className={cn(textClasses.body, "px-2 lg:px-8")}>
-        {home?.description}
-      </p>
       {home?.image ? (
         // TODO: add placeholder with lqip
         <picture className="flex-1 flex flex-col relative mx-2 lg:px-8 lg:w-full lg:mx-0">
@@ -63,8 +63,7 @@ export default async function Home() {
           <source media="(width < 750px)" srcSet={tablet} />
           <source media="(width >= 750px)" srcSet={desktop} />
           <ClientImage
-            {...rest}
-            alt={home?.image?.alt || ""}
+            {...mobileImgProps}
             className="object-cover absolute inset-0 h-full w-full lg:relative"
           />
         </picture>

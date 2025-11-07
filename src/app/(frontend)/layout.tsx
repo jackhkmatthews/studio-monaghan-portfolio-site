@@ -50,6 +50,11 @@ const abc_otto_variable_trial = localFont({
   variable: "--font-abco-otto-variable-trial",
 });
 
+const annexxus_demo = localFont({
+  src: "../../../public/fonts/AnnexxusRegular-Demo.woff2",
+  variable: "--font-annexxus-regular-demo",
+});
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -61,13 +66,14 @@ export default async function RootLayout({
       <body
         className={cn(
           abc_otto_variable_trial.variable,
-          `antialiased min-h-full flex flex-col pt-4 gap-2 lg:pt-8`
+          annexxus_demo.variable,
+          `antialiased min-h-full flex flex-col pt-4 gap-12 lg:gap-16 lg:pt-8`
         )}
       >
-        <header className="px-2 flex justify-between items-center gap-2 lg:px-8">
+        <header className="px-2 flex justify-between items-baseline gap-2 lg:px-8">
           <Link
             href="/"
-            className={cn(textClasses.wordMark, "uppercase")}
+            className={cn(textClasses.wordMark)}
             style={{ lineHeight: "1" }}
           >
             {settings?.title}
@@ -75,7 +81,7 @@ export default async function RootLayout({
 
           <nav>
             <ul className="flex gap-2 lg:gap-8">
-              <li>
+              <li className="contents">
                 <Link
                   className={cn(
                     textClasses.navLink,
@@ -86,7 +92,7 @@ export default async function RootLayout({
                   Work
                 </Link>
               </li>
-              <li>
+              <li className="contents">
                 <Link
                   className={cn(
                     textClasses.navLink,

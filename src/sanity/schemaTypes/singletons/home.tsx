@@ -7,13 +7,13 @@ export const home = defineType({
   type: "document",
   icon: DocumentTextIcon,
   fields: [
-    defineField({
-      name: "description",
-      description: "Displayed on the homepage.",
-      title: "Description",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
+    // defineField({
+    //   name: "description",
+    //   description: "Displayed on the homepage.",
+    //   title: "Description",
+    //   type: "string",
+    //   validation: (rule) => rule.required(),
+    // }),
     defineField({
       name: "image",
       description: "Displayed on the homepage.",
