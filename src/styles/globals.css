@@ -41,6 +41,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --color-gray-brand: #dcd9d2;
+
   --font-serif: var(--font-abco-otto-variable-trial);
   --font-wordmark: var(--font-annexxus-regular-demo);
 }

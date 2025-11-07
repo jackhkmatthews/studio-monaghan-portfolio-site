@@ -7,8 +7,6 @@ import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { initialValues } from "@/sanity/lib/initial-values";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SETTINGS_QUERY } from "@/sanity/queries";
-import Link from "next/link";
-import { textClasses } from "@/styles/textClasses";
 
 /**
  * Generate metadata for the page.
@@ -60,52 +58,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
   return (
-    <html lang="en" className="h-full overflow-y-scroll">
+    <html lang="en" className="h-full overflow-y-scroll bg-gray-brand">
       <body
         className={cn(
           abc_otto_variable_trial.variable,
           annexxus_demo.variable,
-          `antialiased min-h-full flex flex-col pt-4 gap-12 lg:gap-16 lg:pt-8`
+          `antialiased min-h-full flex flex-col gap-12 lg:gap-16 bg-gray-brand`
         )}
       >
-        <header className="px-2 flex justify-between items-baseline gap-2 lg:px-8">
-          <Link
-            href="/"
-            className={cn(textClasses.wordMark)}
-            style={{ lineHeight: "1" }}
-          >
-            {settings?.title}
-          </Link>
-
-          <nav>
-            <ul className="flex gap-2 lg:gap-8">
-              <li className="contents">
-                <Link
-                  className={cn(
-                    textClasses.navLink,
-                    "hover:underline underline-offset-3"
-                  )}
-                  href="/work"
-                >
-                  Work
-                </Link>
-              </li>
-              <li className="contents">
-                <Link
-                  className={cn(
-                    textClasses.navLink,
-                    "hover:underline underline-offset-3"
-                  )}
-                  href="/about"
-                >
-                  About
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
         {children}
         <SanityLive />
       </body>

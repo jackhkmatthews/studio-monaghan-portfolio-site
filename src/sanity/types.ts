@@ -19,7 +19,6 @@ export type Home = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  description?: string;
   image?: {
     asset?: {
       _ref: string;
@@ -405,7 +404,6 @@ export type HOME_QUERYResult = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  description?: string;
   image: {
     asset?: {
       _ref: string;
