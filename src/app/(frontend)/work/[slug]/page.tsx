@@ -1,5 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { PROJECT_QUERY } from "@/sanity/queries";
+import { PROJECT_QUERY, PROJECTS_SLUGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,15 @@ import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
 import { notFound } from "next/navigation";
 import { ClientImage } from "@/components/client-image";
+import { client } from "@/sanity/lib/client";
+
+export async function generateStaticParams() {
+  const items = await client.fetch(PROJECTS_SLUGS_QUERY);
+
+  return items.map((item) => ({
+    slug: item.slug?.current,
+  }));
+}
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;

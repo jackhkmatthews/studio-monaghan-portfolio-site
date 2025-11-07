@@ -33,6 +33,12 @@ export const PROJECTS_QUERY = defineQuery(`
 }
 `);
 
+export const PROJECTS_SLUGS_QUERY = defineQuery(`
+*[_type == "project"] | order(_createdAt desc) {
+  slug
+}
+`);
+
 export const PROJECT_QUERY = defineQuery(`
 *[_type == "project" && slug.current == $slug][0] {
   _id,

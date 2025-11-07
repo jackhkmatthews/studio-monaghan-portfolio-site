@@ -520,6 +520,11 @@ export type PROJECTS_QUERYResult = Array<{
     lqip: string | null;
   } | null;
 }>;
+// Variable: PROJECTS_SLUGS_QUERY
+// Query: *[_type == "project"] | order(_createdAt desc) {  slug}
+export type PROJECTS_SLUGS_QUERYResult = Array<{
+  slug: Slug | null;
+}>;
 // Variable: PROJECT_QUERY
 // Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  sections[] {    ...,    _type == "gallerySection" => {      ...,      images[] {        ...,        "blurHash": asset->metadata.blurHash,        "lqip": asset->metadata.lqip,      }    }  }}
 export type PROJECT_QUERYResult = {
@@ -591,6 +596,7 @@ declare module "@sanity/client" {
     "\n*[_type == \"home\"][0] {\n  ...,\n  image {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": HOME_QUERYResult;
     "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": PROJECTS_QUERYResult;
+    "\n*[_type == \"project\"] | order(_createdAt desc) {\n  slug\n}\n": PROJECTS_SLUGS_QUERYResult;
     "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      ...,\n      images[] {\n        ...,\n        \"blurHash\": asset->metadata.blurHash,\n        \"lqip\": asset->metadata.lqip,\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
   }
 }

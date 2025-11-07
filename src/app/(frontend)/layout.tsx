@@ -9,7 +9,6 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { SETTINGS_QUERY } from "@/sanity/queries";
 import Link from "next/link";
 import { textClasses } from "@/styles/textClasses";
-import { PortableText } from "next-sanity";
 
 /**
  * Generate metadata for the page.
