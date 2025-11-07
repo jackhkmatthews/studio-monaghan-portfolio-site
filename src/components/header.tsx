@@ -13,7 +13,7 @@ export async function Header({
   return (
     <header
       className={cn(
-        "px-2 pt-4 md:pt-6 lg:pt-8 flex justify-between items-baseline gap-4 lg:px-8 z-10 w-full",
+        "px-4 pt-4 md:pt-6 lg:pt-8 flex justify-between items-baseline gap-4 lg:px-8 z-10 w-full",
         className
       )}
       {...props}

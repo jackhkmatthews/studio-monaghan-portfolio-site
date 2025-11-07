@@ -10,7 +10,7 @@ export default async function WorkPage() {
   const { data: projects } = await sanityFetch({ query: PROJECTS_QUERY });
 
   return (
-    <main className="flex flex-col gap-6 flex-1 px-2 pb-8 lg:pb-10 lg:px-8">
+    <main className="flex flex-col gap-6 flex-1 px-4 pb-8 lg:pb-10 lg:px-8">
       {projects && projects.length > 0 && (
         <ul className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (

@@ -34,12 +34,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
-      <h1 className={cn(textClasses.h1, "px-2 lg:px-8 lg:absolute")}>
+      <h1 className={cn(textClasses.h1, "px-4 lg:px-8 lg:absolute")}>
         {project.title}
       </h1>
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
-        <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-2 lg:px-8 grid-cols-4">
+        <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-4 lg:px-8 grid-cols-4">
           {project.sections.map((section, index) => {
             const key = section._key;
             // Gallery section

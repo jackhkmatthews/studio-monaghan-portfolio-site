@@ -58,7 +58,7 @@ export default async function Home() {
     <main className="flex flex-col gap-8 flex-1 md:pb-2 lg:pb-8">
       {home?.image ? (
         // TODO: add placeholder with lqip
-        <picture className="flex-1 flex flex-col relative md:mx-2 lg:px-8 lg:w-full lg:mx-0">
+        <picture className="flex-1 flex flex-col relative md:mx-4 lg:px-8 lg:w-full lg:mx-0">
           <source media="(width < 500px)" srcSet={mobile} />
           <source media="(width < 750px)" srcSet={tablet} />
           <source media="(width >= 750px)" srcSet={desktop} />
