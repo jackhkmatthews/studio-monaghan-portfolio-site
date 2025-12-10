@@ -19,7 +19,7 @@ export type Home = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  image?: {
+  carouselImages?: Array<{
     asset?: {
       _ref: string;
       _type: "reference";
@@ -30,8 +30,16 @@ export type Home = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
+    project?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "project";
+    };
+    photographer?: string;
     _type: "image";
-  };
+    _key: string;
+  }>;
 };
 
 export type SanityImageCrop = {
@@ -307,14 +315,14 @@ export type SETTINGS_QUERYResult = {
   };
 } | null;
 // Variable: HOME_QUERY
-// Query: *[_type == "home"][0] {  ...,  image {    ...,    "blurHash": asset->metadata.blurHash,    "lqip": asset->metadata.lqip,  }}
+// Query: *[_type == "home"][0] {  ...,  carouselImages[] {    ...,    "blurHash": asset->metadata.blurHash,    "lqip": asset->metadata.lqip,    "project": {      "label": project->title,      "slug": project->slug    }  }}
 export type HOME_QUERYResult = {
   _id: string;
   _type: "home";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  image: {
+  carouselImages: Array<{
     asset?: {
       _ref: string;
       _type: "reference";
@@ -325,10 +333,16 @@ export type HOME_QUERYResult = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
+    project: {
+      label: string | null;
+      slug: Slug | null;
+    };
+    photographer?: string;
     _type: "image";
+    _key: string;
     blurHash: string | null;
     lqip: string | null;
-  } | null;
+  }> | null;
 } | null;
 // Variable: ABOUT_QUERY
 // Query: *[_type == "about"][0]
@@ -411,7 +425,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n*[_type == \"settings\"][0]\n": SETTINGS_QUERYResult;
-    "\n*[_type == \"home\"][0] {\n  ...,\n  image {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": HOME_QUERYResult;
+    "\n*[_type == \"home\"][0] {\n  ...,\n  carouselImages[] {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n    \"project\": {\n      \"label\": project->title,\n      \"slug\": project->slug\n    }\n  }\n}\n": HOME_QUERYResult;
     "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": PROJECTS_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  slug\n}\n": PROJECTS_SLUGS_QUERYResult;

@@ -7,8 +7,9 @@ import { SETTINGS_QUERY } from "@/sanity/queries";
 
 export async function Header({
   className,
+  isWhite,
   ...props
-}: ComponentProps<"header">) {
+}: ComponentProps<"header"> & { isWhite?: boolean }) {
   const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY });
   return (
     <header
@@ -20,7 +21,10 @@ export async function Header({
     >
       <Link
         href="/"
-        className={cn(textClasses.wordMark)}
+        className={cn(
+          textClasses.wordMark,
+          isWhite && "text-white transition-colors"
+        )}
         style={{ lineHeight: "1" }}
       >
         {settings?.title || ""}
@@ -32,7 +36,8 @@ export async function Header({
             <Link
               className={cn(
                 textClasses.navLink,
-                "hover:underline underline-offset-3"
+                isWhite && "text-white",
+                "hover:underline underline-offset-3 transition-colors"
               )}
               href="/work"
             >
@@ -43,7 +48,8 @@ export async function Header({
             <Link
               className={cn(
                 textClasses.navLink,
-                "hover:underline underline-offset-3"
+                isWhite && "text-white",
+                "hover:underline underline-offset-3 transition-colors"
               )}
               href="/about"
             >

@@ -7,7 +7,7 @@ export default async function HomeLayout({
 }>) {
   return (
     <>
-      <Header className="absolute md:relative" />
+      <Header className="absolute" isWhite />
       {children}
     </>
   );

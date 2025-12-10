@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity";
-import { DocumentTextIcon } from "@sanity/icons";
+import { defineArrayMember, defineField, defineType } from "sanity";
+import { DocumentTextIcon, ImageIcon } from "@sanity/icons";
 
 export const home = defineType({
   name: "home",
@@ -7,34 +7,33 @@ export const home = defineType({
   type: "document",
   icon: DocumentTextIcon,
   fields: [
-    // defineField({
-    //   name: "description",
-    //   description: "Displayed on the homepage.",
-    //   title: "Description",
-    //   type: "string",
-    //   validation: (rule) => rule.required(),
-    // }),
     defineField({
-      name: "image",
-      description: "Displayed on the homepage.",
-      title: "Image",
-      type: "image",
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const parent = context?.parent as { asset?: { _ref?: string } };
-
-          return !value && parent?.asset?._ref
-            ? "Alt text is required when an image is present"
-            : true;
-        }),
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        defineField({
-          name: "alt",
-          type: "string",
-          title: "Alternative text",
+      name: "carouselImages",
+      title: "Carousel Images",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "image",
+          icon: ImageIcon,
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              type: "string",
+              title: "Alternative text",
+            }),
+            defineField({
+              name: "project",
+              type: "reference",
+              title: "Project",
+              to: [{ type: "project" }],
+            }),
+            defineField({
+              name: "photographer",
+              type: "string",
+              title: "Photographer",
+            }),
+          ],
         }),
       ],
     }),

@@ -59,12 +59,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full overflow-y-scroll bg-gray-brand">
+    <html lang="en" className="h-full overflow-y-auto bg-gray-brand">
       <body
         className={cn(
           abc_otto_variable_trial.variable,
           annexxus_demo.variable,
-          `antialiased min-h-full flex flex-col gap-12 lg:gap-16 bg-gray-brand`
+          `antialiased min-h-full flex flex-col gap-12 lg:gap-16 bg-gray-brand h-full`
         )}
       >
         {children}

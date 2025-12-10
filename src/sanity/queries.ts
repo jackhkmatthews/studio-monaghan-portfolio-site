@@ -7,10 +7,14 @@ export const SETTINGS_QUERY = defineQuery(`
 export const HOME_QUERY = defineQuery(`
 *[_type == "home"][0] {
   ...,
-  image {
+  carouselImages[] {
     ...,
     "blurHash": asset->metadata.blurHash,
     "lqip": asset->metadata.lqip,
+    "project": {
+      "label": project->title,
+      "slug": project->slug
+    }
   }
 }
 `);
