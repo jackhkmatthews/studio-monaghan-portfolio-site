@@ -3,6 +3,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { ABOUT_QUERY } from "@/sanity/queries";
 import { PortableText } from "next-sanity";
 import { textClasses } from "@/styles/textClasses";
+import { Logo } from "@/components/ui/logo";
 
 export default async function AboutPage() {
   const { data: about } = await sanityFetch({ query: ABOUT_QUERY });
@@ -23,10 +24,11 @@ export default async function AboutPage() {
       <footer
         className={cn(
           textClasses.portableTextFooter,
-          "col-span-full max-w-prose lg:col-start-2 py-6 lg:py-10"
+          "col-span-full max-w-prose lg:col-start-2 pb-6 lg:pb-10"
         )}
         style={{ lineHeight: "1" }}
       >
+        <Logo className="h-14 w-14" />
         <PortableText value={about?.legal || []} />
       </footer>
     </main>
