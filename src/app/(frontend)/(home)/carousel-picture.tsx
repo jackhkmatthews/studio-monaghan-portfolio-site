@@ -9,10 +9,12 @@ export function CarouselPicture({
   image,
   alt,
   className,
+  imageClassName,
   ...props
 }: {
   image: SanityImageSource;
   alt: string;
+  imageClassName?: string;
 } & ComponentProps<"picture">) {
   const common = {
     alt,
@@ -64,7 +66,10 @@ export function CarouselPicture({
       <source media="(width < 500px)" srcSet={mobile} />
       <source media="(width < 750px)" srcSet={tablet} />
       <source media="(width >= 750px)" srcSet={desktop} />
-      <ClientImage {...mobileImgProps} className="h-full object-cover w-full" />
+      <ClientImage
+        {...mobileImgProps}
+        className={cn("object-cover w-full", imageClassName)}
+      />
     </picture>
   );
 }

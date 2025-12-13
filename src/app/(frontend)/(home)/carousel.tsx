@@ -1,14 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ComponentProps, useEffect, useRef } from "react";
+import { ComponentProps } from "react";
 import { CarouselPicture } from "./carousel-picture";
 import { SanityImageSource } from "@sanity/asset-utils";
 import { Slug } from "@/sanity/types";
 import Link from "next/link";
 import { textClasses } from "@/styles/textClasses";
 import { ctaClasses } from "@/styles/ctaClasses";
-import { changeSlide } from "./change-slide";
 
 export function Carousel({
   images,
@@ -25,20 +24,19 @@ export function Carousel({
       }[]
     | null;
 } & ComponentProps<"ul">) {
-  const scrollContainer = useRef<HTMLUListElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout>(undefined);
+  // const scrollContainer = useRef<HTMLUListElement>(null);
+  // const intervalRef = useRef<NodeJS.Timeout>(undefined);
 
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      // changeSlide(scrollContainer.current, "down", images?.length);
-    }, 3000);
-    return () => clearInterval(intervalRef.current);
-  }, [images?.length]);
+  // useEffect(() => {
+  //   intervalRef.current = setInterval(() => {
+  //     changeSlide(scrollContainer.current, "down", images?.length);
+  //   }, 3000);
+  //   return () => clearInterval(intervalRef.current);
+  // }, [images?.length]);
 
   return (
     <ul
-      onScroll={(e) => console.log("hi", e)}
-      ref={scrollContainer}
+      // ref={scrollContainer}
       className={cn(
         "flex overflow-y-scroll snap-y snap-mandatory [scrollbar-width:none] flex-col",
         className
@@ -52,6 +50,7 @@ export function Carousel({
             key={`${image._key}_${index}`}
           >
             <CarouselPicture
+              imageClassName="h-full"
               className="h-full w-full"
               image={image?.asset || ""}
               alt={image?.alt || ""}
