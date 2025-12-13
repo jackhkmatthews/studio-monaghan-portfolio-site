@@ -30,16 +30,17 @@ export function Carousel({
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      changeSlide(scrollContainer.current, "right", images?.length);
+      // changeSlide(scrollContainer.current, "down", images?.length);
     }, 3000);
     return () => clearInterval(intervalRef.current);
   }, [images?.length]);
 
   return (
     <ul
+      onScroll={(e) => console.log("hi", e)}
       ref={scrollContainer}
       className={cn(
-        "flex overflow-x-scroll snap-x snap-mandatory [scrollbar-width:none]",
+        "flex overflow-y-scroll snap-y snap-mandatory [scrollbar-width:none] flex-col",
         className
       )}
       {...rest}

@@ -1,29 +1,29 @@
 export function changeSlide(
   scrollContainer: HTMLElement | null,
-  direction: "left" | "right",
+  direction: "up" | "down",
   slides: number | undefined
 ) {
   if (!scrollContainer || !slides) return;
-  const scrollWidth = scrollContainer.scrollWidth;
-  const slideWidth = scrollWidth / slides;
-  const scrollLeft = scrollContainer.scrollLeft;
-  const isAtFarLeft = scrollLeft === 0;
-  const isAtFarRight = scrollLeft === scrollWidth - slideWidth;
-  let left = 0;
+  const scrollHeight = scrollContainer.scrollHeight;
+  const slideHeight = scrollHeight / slides;
+  const scrollTop = scrollContainer.scrollTop;
+  const isAtTop = scrollTop === 0;
+  const isAtBottom = scrollTop === scrollHeight - slideHeight;
+  let top = 0;
   let behavior: ScrollBehavior = "smooth";
-  if (direction === "left" && isAtFarLeft) {
-    left = scrollWidth;
+  if (direction === "down" && isAtBottom) {
+    top = 0;
     behavior = "instant";
-  } else if (direction === "left" && !isAtFarLeft) {
-    left = scrollLeft - slideWidth;
-  } else if (direction === "right" && isAtFarRight) {
-    left = 0;
+  } else if (direction === "down" && !isAtBottom) {
+    top = scrollTop + slideHeight;
+  } else if (direction === "up" && isAtTop) {
+    top = scrollHeight - slideHeight;
     behavior = "instant";
-  } else if (direction === "right" && !isAtFarRight) {
-    left = scrollLeft + slideWidth;
+  } else if (direction === "up" && !isAtTop) {
+    top = scrollTop - slideHeight;
   }
   scrollContainer.scrollTo({
-    left,
+    top,
     behavior,
   });
 }
