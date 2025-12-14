@@ -59,10 +59,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className="min-h-full overflow-y-auto bg-gray-brand snap-y snap-mandatory"
-    >
+    <html lang="en" className="min-h-full bg-gray-brand snap-y snap-mandatory">
       <body
         className={cn(
           abc_otto_variable_trial.variable,

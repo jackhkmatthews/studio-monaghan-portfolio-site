@@ -1,15 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ComponentProps } from "react";
 import { CarouselPicture } from "./carousel-picture";
+import { textClasses } from "@/styles/textClasses";
+import Link from "next/link";
+import { ctaClasses } from "@/styles/ctaClasses";
+import { ComponentProps, useEffect, useState } from "react";
 import { SanityImageSource } from "@sanity/asset-utils";
 import { Slug } from "@/sanity/types";
-import Link from "next/link";
-import { textClasses } from "@/styles/textClasses";
-import { ctaClasses } from "@/styles/ctaClasses";
 
-export function Carousel({
+export function Pictures({
   images,
   className,
   ...rest
@@ -24,34 +24,46 @@ export function Carousel({
       }[]
     | null;
 } & ComponentProps<"ul">) {
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setIsScrolling(true);
+    }
+    function onScrollend() {
+      setIsScrolling(false);
+    }
+    document?.addEventListener("scroll", onScroll);
+    document?.addEventListener("scrollend", onScrollend);
+    return () => {
+      document.removeEventListener("scroll", onScroll);
+      document.removeEventListener("scrollend", onScrollend);
+    };
+  }, []);
+
   return (
-    <ul
-      className={cn(
-        "flex overflow-y-scroll snap-y snap-mandatory [scrollbar-width:none] flex-col",
-        className
-      )}
-      {...rest}
-    >
+    <ul className={cn("flex flex-col", className)} {...rest}>
       {images?.map((image, index) => {
         return (
           <figure
-            className="h-full w-full basis-full shrink-0 snap-center relative"
+            className="w-full basis-full shrink-0 snap-center relative"
             key={`${image._key}_${index}`}
           >
             <CarouselPicture
-              imageClassName="h-full"
-              className="h-full w-full"
+              className="w-full"
+              imageClassName="h-lvh"
               image={image?.asset || ""}
               alt={image?.alt || ""}
             />
             <figcaption
               className={cn(
                 textClasses.body,
-                "absolute left-8 bottom-8 text-white"
+                "absolute left-0 bottom-8 text-white px-4 lg:px-8 inline-flex gap-2 transition-opacity",
+                isScrolling ? "opacity-0 duration-75" : "duration-500"
               )}
             >
               {image.project?.label && (
-                <>
+                <span>
                   Client:{" "}
                   <Link
                     className={ctaClasses.link}
@@ -60,9 +72,11 @@ export function Carousel({
                     {image.project?.label}
                   </Link>
                   .
-                </>
+                </span>
               )}
-              {image.photographer && <> Photographer: {image.photographer}.</>}
+              {image.photographer && (
+                <span>Photographer: {image.photographer}.</span>
+              )}
             </figcaption>
           </figure>
         );
