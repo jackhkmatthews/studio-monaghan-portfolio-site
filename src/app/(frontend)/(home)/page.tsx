@@ -11,8 +11,8 @@ export default async function Home() {
     ();
 
   return (
-    <main className="min-h-full">
-      <Header className="w-full fixed" isWhite />
+    <main className="min-h-full @container">
+      <Header className="w-[100cqw] fixed" isWhite />
       {images && <Pictures images={images} />}
     </main>
   );
