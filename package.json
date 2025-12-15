@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint:check": "eslint",
@@ -13,6 +13,7 @@
     "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate"
   },
   "dependencies": {
+    "@af-utils/scrollend-polyfill": "^0.0.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@sanity/image-url": "^2.0.2",
     "@sanity/vision": "^4.20.3",

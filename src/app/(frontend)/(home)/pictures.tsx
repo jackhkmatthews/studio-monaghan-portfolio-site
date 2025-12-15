@@ -33,11 +33,11 @@ export function Pictures({
     function onScrollend() {
       setIsScrolling(false);
     }
-    document?.addEventListener("scroll", onScroll);
-    document?.addEventListener("scrollend", onScrollend);
+    document?.body.addEventListener("scroll", onScroll);
+    document?.body.addEventListener("scrollend", onScrollend);
     return () => {
-      document.removeEventListener("scroll", onScroll);
-      document.removeEventListener("scrollend", onScrollend);
+      document.body.removeEventListener("scroll", onScroll);
+      document.body.removeEventListener("scrollend", onScrollend);
     };
   }, []);
 
@@ -46,24 +46,23 @@ export function Pictures({
       {images?.map((image, index) => {
         return (
           <figure
-            className="w-full basis-full shrink-0 snap-center relative"
+            className={cn("w-full basis-full shrink-0 relative snap-center")}
             key={`${image._key}_${index}`}
           >
             <CarouselPicture
               className="w-full"
-              imageClassName="h-lvh"
               image={image?.asset || ""}
               alt={image?.alt || ""}
             />
             <figcaption
               className={cn(
                 textClasses.body,
-                "absolute left-0 bottom-8 text-white px-4 lg:px-8 inline-flex gap-2 transition-opacity",
+                "absolute left-0 bottom-8 text-white px-4 lg:px-8 transition-opacity",
                 isScrolling ? "opacity-0 duration-75" : "duration-500"
               )}
             >
               {image.project?.label && (
-                <span>
+                <>
                   Client:{" "}
                   <Link
                     className={ctaClasses.link}
@@ -72,11 +71,9 @@ export function Pictures({
                     {image.project?.label}
                   </Link>
                   .
-                </span>
+                </>
               )}
-              {image.photographer && (
-                <span>Photographer: {image.photographer}.</span>
-              )}
+              {image.photographer && <> Photographer: {image.photographer}.</>}
             </figcaption>
           </figure>
         );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import "@af-utils/scrollend-polyfill";
 import { cn } from "@/lib/utils";
 
 import localFont from "next/font/local";
@@ -59,12 +60,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="min-h-full bg-gray-brand snap-y snap-mandatory">
+    <html lang="en" className="h-full bg-gray-brand overflow-y-hidden">
       <body
         className={cn(
           abc_otto_variable_trial.variable,
           annexxus_demo.variable,
-          `antialiased min-h-full flex flex-col gap-12 lg:gap-16 bg-gray-brand`
+          `antialiased h-full min-h-lvh flex flex-col gap-12 lg:gap-16 bg-gray-brand overflow-y-scroll snap-y snap-mandatory relative`
         )}
       >
         {children}

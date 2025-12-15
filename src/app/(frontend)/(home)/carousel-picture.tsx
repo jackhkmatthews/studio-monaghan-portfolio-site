@@ -68,7 +68,7 @@ export function CarouselPicture({
       <source media="(width >= 750px)" srcSet={desktop} />
       <ClientImage
         {...mobileImgProps}
-        className={cn("object-cover w-full", imageClassName)}
+        className={cn("object-cover w-full h-lvh", imageClassName)}
       />
     </picture>
   );
