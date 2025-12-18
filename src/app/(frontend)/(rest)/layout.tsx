@@ -5,12 +5,12 @@ import { SanityLive } from "@/sanity/lib/live";
 import localFont from "next/font/local";
 import { Header } from "@/components/header";
 
-export const abc_otto_variable_trial = localFont({
+const abc_otto_variable_trial = localFont({
   src: "../../../../public/fonts/ABCOttoVariable-Trial.woff2",
   variable: "--font-abco-otto-variable-trial",
 });
 
-export const annexxus_demo = localFont({
+const annexxus_demo = localFont({
   src: "../../../../public/fonts/AnnexxusRegular-Demo.woff2",
   variable: "--font-annexxus-regular-demo",
 });
