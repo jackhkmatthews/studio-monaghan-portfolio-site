@@ -49,6 +49,11 @@ export const PROJECT_QUERY = defineQuery(`
   title,
   slug,
   overview,
+  bannerImage {
+    ...,
+    "blurHash": asset->metadata.blurHash,
+    "lqip": asset->metadata.lqip,
+  },
   sections[] {
     ...,
     _type == "gallerySection" => {

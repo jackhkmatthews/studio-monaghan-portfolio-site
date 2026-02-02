@@ -37,7 +37,32 @@ export const projectType = defineType({
       name: "coverImage",
       title: "Cover Image",
       description:
-        "Used on projects list page ans as sharing image on social media.",
+        "Used on projects list page and as sharing image on social media.",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context?.parent as { asset?: { _ref?: string } };
+
+          return !value && parent?.asset?._ref
+            ? "Alt text is required when an image is present"
+            : true;
+        }),
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alternative text",
+        }),
+      ],
+    }),
+    defineField({
+      name: "bannerImage",
+      title: "Banner Image",
+      description:
+        "Used on project page as the banner image.",
       type: "image",
       options: {
         hotspot: true,

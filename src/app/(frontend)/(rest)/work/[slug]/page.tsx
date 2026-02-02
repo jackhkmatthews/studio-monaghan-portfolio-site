@@ -2,6 +2,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { PROJECT_QUERY, PROJECTS_SLUGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
+import { getImageDimensions } from '@sanity/asset-utils';
 import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
@@ -32,15 +33,35 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  console.log(project);
+
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
-      <h1 className={cn(textClasses.h1, "px-4 lg:px-8 lg:absolute")}>
+      <h1 className={cn(textClasses.h1, "px-4 lg:px-8")}>
         {project.title}
       </h1>
 
+
+      {project.bannerImage && (
+        <ClientImage
+          className="w-full object-cover aspect-square md:aspect-video lg:aspect-[3/1] max-h-[50vh]"
+          src={urlFor(project.bannerImage).url()}
+          alt={project.bannerImage?.alt || project.title || ""}
+          width={getImageDimensions(project.bannerImage.asset?._ref || "").width}
+          height={getImageDimensions(project.bannerImage.asset?._ref || "").height}
+          sizes="100vw"
+          placeholder={
+            project.bannerImage.lqip
+              ? `data:image/${project.bannerImage.lqip.split("data:image/")[1]}`
+              : "empty"
+          }
+        />
+      )}
+
+
       {Array.isArray(project.sections) && project.sections.length > 0 && (
         <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-4 lg:px-8 grid-cols-4">
-          {project.sections.map((section, index) => {
+          {project.sections.map((section) => {
             const key = section._key;
             // Gallery section
             // TODO: be oppionated about the image aspect ratios
@@ -72,9 +93,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   .auto("format")
                   .url();
 
-                if (index === 0) {
-                  console.log(img, url);
-                }
                 return (
                   <ClientImage
                     key={img._key}

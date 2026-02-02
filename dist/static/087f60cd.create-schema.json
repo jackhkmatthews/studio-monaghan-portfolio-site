@@ -1,0 +1,527 @@
+[
+  {
+    "fields": [
+      {
+        "initialValue": "Studio Monaghan",
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Displayed on social cards and search engine results.",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "initialValue": "Original approaches to brand building for creatively-minded clients.",
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Displayed on social cards and search engine results.",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Displayed on social cards and search engine results.",
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "custom"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "description": "Important for accessibility and SEO.",
+            "name": "alt",
+            "type": "string",
+            "title": "Alternative text"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "metadataBase",
+            "type": "url"
+          }
+        ],
+        "name": "ogImage",
+        "type": "image",
+        "title": "Open Graph Image"
+      }
+    ],
+    "name": "settings",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "url",
+        "options": {
+          "list": [
+            {
+              "title": "URL",
+              "value": "href"
+            },
+            {
+              "title": "Page",
+              "value": "page"
+            },
+            {
+              "title": "Post",
+              "value": "post"
+            }
+          ],
+          "layout": "radio"
+        },
+        "name": "linkType",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              },
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "href",
+        "type": "url",
+        "title": "URL"
+      },
+      {
+        "initialValue": false,
+        "name": "openInNewTab",
+        "type": "boolean",
+        "title": "Open in new tab"
+      }
+    ],
+    "name": "link",
+    "type": "object"
+  },
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                }
+              ],
+              "name": "link",
+              "type": "object",
+              "title": "URL"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "Strong"
+            },
+            {
+              "value": "em",
+              "title": "Emphasis"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "Bullet"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "Normal"
+          },
+          {
+            "value": "h1",
+            "title": "H1"
+          },
+          {
+            "value": "h2",
+            "title": "H2"
+          },
+          {
+            "value": "h3",
+            "title": "H3"
+          },
+          {
+            "value": "h4",
+            "title": "H4"
+          },
+          {
+            "value": "blockquote",
+            "title": "Quote"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alternative Text"
+          }
+        ],
+        "type": "image"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array"
+  },
+  {
+    "fields": [
+      {
+        "options": {
+          "layout": "grid"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "custom"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "alt",
+                "type": "string",
+                "title": "Alternative text"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      }
+    ],
+    "name": "gallerySection",
+    "type": "object",
+    "title": "Image Gallery"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "This field is the title of your project.",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 155
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Used both for the <meta> description tag for SEO, and project subheader.",
+        "name": "overview",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Used on projects list page and as sharing image on social media.",
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alternative text"
+          }
+        ],
+        "name": "coverImage",
+        "type": "image"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Used on project page as the banner image.",
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alternative text"
+          }
+        ],
+        "name": "bannerImage",
+        "type": "image"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Ordered content. Add text blocks or image galleries (1, 2, or 6 images).",
+        "of": [
+          {
+            "type": "gallerySection",
+            "title": "Image Gallery"
+          },
+          {
+            "fields": [
+              {
+                "name": "content",
+                "type": "blockContent"
+              }
+            ],
+            "type": "object",
+            "name": "textBlock"
+          }
+        ],
+        "name": "sections",
+        "type": "array",
+        "title": "Content Sections"
+      }
+    ],
+    "name": "project",
+    "type": "document",
+    "title": "Projects"
+  },
+  {
+    "fields": [
+      {
+        "description": "Add sections to the about page",
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "content",
+                "type": "blockContent"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "section",
+        "type": "array",
+        "title": "Sections"
+      },
+      {
+        "description": "Text to display in the legal footer",
+        "name": "legal",
+        "type": "blockContent"
+      }
+    ],
+    "name": "about",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Alternative text"
+              },
+              {
+                "to": [
+                  {
+                    "type": "project"
+                  }
+                ],
+                "name": "project",
+                "type": "reference"
+              },
+              {
+                "name": "photographer",
+                "type": "string"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "carouselImages",
+        "type": "array"
+      }
+    ],
+    "name": "home",
+    "type": "document"
+  }
+]

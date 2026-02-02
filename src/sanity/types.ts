@@ -126,6 +126,19 @@ export type Project = {
     alt?: string;
     _type: "image";
   };
+  bannerImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   sections?: Array<{
     _key: string;
   } & GallerySection | {
@@ -388,12 +401,27 @@ export type PROJECTS_SLUGS_QUERYResult = Array<{
   slug: Slug | null;
 }>;
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  sections[] {    ...,    _type == "gallerySection" => {      ...,      images[] {        ...,        "blurHash": asset->metadata.blurHash,        "lqip": asset->metadata.lqip,      }    }  }}
+// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  slug,  overview,  bannerImage {    ...,    "blurHash": asset->metadata.blurHash,    "lqip": asset->metadata.lqip,  },  sections[] {    ...,    _type == "gallerySection" => {      ...,      images[] {        ...,        "blurHash": asset->metadata.blurHash,        "lqip": asset->metadata.lqip,      }    }  }}
 export type PROJECT_QUERYResult = {
   _id: string;
   title: string | null;
   slug: Slug | null;
   overview: string | null;
+  bannerImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    blurHash: string | null;
+    lqip: string | null;
+  } | null;
   sections: Array<{
     _key: string;
     _type: "gallerySection";
@@ -429,6 +457,6 @@ declare module "@sanity/client" {
     "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": PROJECTS_QUERYResult;
     "\n*[_type == \"project\"] | order(_createdAt desc) {\n  slug\n}\n": PROJECTS_SLUGS_QUERYResult;
-    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      ...,\n      images[] {\n        ...,\n        \"blurHash\": asset->metadata.blurHash,\n        \"lqip\": asset->metadata.lqip,\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
+    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  bannerImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  },\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      ...,\n      images[] {\n        ...,\n        \"blurHash\": asset->metadata.blurHash,\n        \"lqip\": asset->metadata.lqip,\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
   }
 }
