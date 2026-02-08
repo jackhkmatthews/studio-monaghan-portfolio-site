@@ -28,7 +28,7 @@ export default async function WorkPage() {
   return (
     <main className="flex flex-col gap-6 flex-1 px-4 pb-8 lg:pb-10 lg:px-8">
       {projects && projects.length > 0 && (
-        <ul className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-x-2 gap-y-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => {
             const dims = getImageDimensions(
               project.coverImage?.asset?._ref || "",
