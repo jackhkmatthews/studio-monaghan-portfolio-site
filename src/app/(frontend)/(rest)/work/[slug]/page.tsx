@@ -33,8 +33,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  console.log(project);
-
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
       <h1 className={cn(textClasses.h1, "px-4 lg:px-8")}>
@@ -89,7 +87,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 const url = urlFor(img)
                   .width(width)
                   .height(height)
-                  // .quality(85)
                   .auto("format")
                   .url();
 
