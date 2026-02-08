@@ -7,6 +7,20 @@ import Link from "next/link";
 import { ClientImage } from "@/components/client-image";
 import { getImageDimensions } from "@sanity/asset-utils";
 
+function getDimensions(aspectRatio: number, maxWidth: number, maxHeight: number) {
+  // Try fitting to max width first
+  let width = maxWidth;
+  let height = Math.floor(maxWidth / aspectRatio);
+
+  // If height exceeds max, scale down to fit max height
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = Math.floor(maxHeight * aspectRatio);
+  }
+
+  return { width, height };
+}
+
 export default async function WorkPage() {
   const { data: projects } = await sanityFetch({ query: PROJECTS_QUERY });
 
@@ -18,7 +32,13 @@ export default async function WorkPage() {
             const dims = getImageDimensions(
               project.coverImage?.asset?._ref || "",
             );
-            const shortestSide = Math.min(dims.width, dims.height);
+            const { width, height } = getDimensions(1.2, dims.width, dims.height);
+            const url = urlFor(project.coverImage || {})
+              .height(height)
+              .width(width)
+              .auto("format")
+              .url()
+
             return (
               <li key={project._id + index.toString()}>
                 <article
@@ -33,15 +53,11 @@ export default async function WorkPage() {
                           ? `data:image/${project.coverImage.lqip.split("data:image/")[1]}`
                           : "empty"
                       }
-                      src={urlFor(project.coverImage)
-                        .height(shortestSide)
-                        .width(shortestSide)
-                        .auto("format")
-                        .url()}
+                      src={url}
                       sizes="(width < 768px) 100vw, (width < 1024px) 50vw, (width >= 1024px) 33.33vw"
                       alt={project.coverImage.alt || ""}
-                      width={shortestSide}
-                      height={shortestSide}
+                      width={width}
+                      height={height}
                     />
                   )}
                   <Link
