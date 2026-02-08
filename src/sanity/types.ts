@@ -19,12 +19,17 @@ export type Work = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  projects?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
+  projectRows?: Array<{
+    projects?: Array<{
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      _key: string;
+      [internalGroqTypeReferenceTo]?: "project";
+    }>;
+    layout?: "equal" | "left" | "right";
+    _type: "projectRow";
     _key: string;
-    [internalGroqTypeReferenceTo]?: "project";
   }>;
 };
 
@@ -87,37 +92,40 @@ export type About = {
   legal?: BlockContent;
 };
 
-export type BlockContent = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-  listItem?: "bullet";
-  markDefs?: Array<{
-    href?: string;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-} | {
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-  };
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt?: string;
-  _type: "image";
-  _key: string;
-}>;
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }
+  | {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }
+>;
 
 export type Project = {
   _id: string;
@@ -154,13 +162,16 @@ export type Project = {
     alt?: string;
     _type: "image";
   };
-  sections?: Array<{
-    _key: string;
-  } & GallerySection | {
-    content?: BlockContent;
-    _type: "textBlock";
-    _key: string;
-  }>;
+  sections?: Array<
+    | ({
+        _key: string;
+      } & GallerySection)
+    | {
+        content?: BlockContent;
+        _type: "textBlock";
+        _key: string;
+      }
+  >;
 };
 
 export type Slug = {
@@ -316,7 +327,26 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Work | Home | SanityImageCrop | SanityImageHotspot | About | BlockContent | Project | Slug | GallerySection | Link | Settings | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes =
+  | Work
+  | Home
+  | SanityImageCrop
+  | SanityImageHotspot
+  | About
+  | BlockContent
+  | Project
+  | Slug
+  | GallerySection
+  | Link
+  | Settings
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/queries.ts
 // Variable: SETTINGS_QUERY
@@ -390,33 +420,36 @@ export type ABOUT_QUERYResult = {
   legal?: BlockContent;
 } | null;
 // Variable: WORK_QUERY
-// Query: *[_type == "work"][0] {  ...,  projects[]-> {    _id,    title,    slug,    overview,    coverImage {      ...,      "blurHash": asset->metadata.blurHash,      "lqip": asset->metadata.lqip,    }  }}
+// Query: *[_type == "work"][0] {  ...,  projectRows[] {    layout,    projects[]-> {      _id,      title,      slug,      overview,      coverImage {        ...,        "blurHash": asset->metadata.blurHash,        "lqip": asset->metadata.lqip,      }    }  }}
 export type WORK_QUERYResult = {
   _id: string;
   _type: "work";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  projects: Array<{
-    _id: string;
-    title: string | null;
-    slug: Slug | null;
-    overview: string | null;
-    coverImage: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-      blurHash: string | null;
-      lqip: string | null;
-    } | null;
+  projectRows: Array<{
+    layout: "equal" | "left" | "right" | null;
+    projects: Array<{
+      _id: string;
+      title: string | null;
+      slug: Slug | null;
+      overview: string | null;
+      coverImage: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        blurHash: string | null;
+        lqip: string | null;
+      } | null;
+    }> | null;
   }> | null;
 } | null;
 // Variable: PROJECTS_QUERY
@@ -469,44 +502,47 @@ export type PROJECT_QUERYResult = {
     blurHash: string | null;
     lqip: string | null;
   } | null;
-  sections: Array<{
-    _key: string;
-    _type: "gallerySection";
-    images: Array<{
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-      _key: string;
-      blurHash: string | null;
-      lqip: string | null;
-    }> | null;
-    orientation?: "landscape" | "portrait";
-    twoImagePosition?: "center" | "left" | "right";
-  } | {
-    content?: BlockContent;
-    _type: "textBlock";
-    _key: string;
-  }> | null;
+  sections: Array<
+    | {
+        _key: string;
+        _type: "gallerySection";
+        images: Array<{
+          asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          _key: string;
+          blurHash: string | null;
+          lqip: string | null;
+        }> | null;
+        orientation?: "landscape" | "portrait";
+        twoImagePosition?: "center" | "left" | "right";
+      }
+    | {
+        content?: BlockContent;
+        _type: "textBlock";
+        _key: string;
+      }
+  > | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n*[_type == \"settings\"][0]\n": SETTINGS_QUERYResult;
-    "\n*[_type == \"home\"][0] {\n  ...,\n  carouselImages[] {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n    \"project\": {\n      \"label\": project->title,\n      \"slug\": project->slug\n    }\n  }\n}\n": HOME_QUERYResult;
-    "\n*[_type == \"about\"][0]\n": ABOUT_QUERYResult;
-    "\n*[_type == \"work\"][0] {\n  ...,\n  projects[]-> {\n    _id,\n    title,\n    slug,\n    overview,\n    coverImage {\n      ...,\n      \"blurHash\": asset->metadata.blurHash,\n      \"lqip\": asset->metadata.lqip,\n    }\n  }\n}\n": WORK_QUERYResult;
-    "\n*[_type == \"project\"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  }\n}\n": PROJECTS_QUERYResult;
-    "\n*[_type == \"project\"] | order(_createdAt desc) {\n  slug\n}\n": PROJECTS_SLUGS_QUERYResult;
-    "\n*[_type == \"project\" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  bannerImage {\n    ...,\n    \"blurHash\": asset->metadata.blurHash,\n    \"lqip\": asset->metadata.lqip,\n  },\n  sections[] {\n    ...,\n    _type == \"gallerySection\" => {\n      ...,\n      images[] {\n        ...,\n        \"blurHash\": asset->metadata.blurHash,\n        \"lqip\": asset->metadata.lqip,\n      }\n    }\n  }\n}\n": PROJECT_QUERYResult;
+    '\n*[_type == "settings"][0]\n': SETTINGS_QUERYResult;
+    '\n*[_type == "home"][0] {\n  ...,\n  carouselImages[] {\n    ...,\n    "blurHash": asset->metadata.blurHash,\n    "lqip": asset->metadata.lqip,\n    "project": {\n      "label": project->title,\n      "slug": project->slug\n    }\n  }\n}\n': HOME_QUERYResult;
+    '\n*[_type == "about"][0]\n': ABOUT_QUERYResult;
+    '\n*[_type == "work"][0] {\n  ...,\n  projectRows[] {\n    layout,\n    projects[]-> {\n      _id,\n      title,\n      slug,\n      overview,\n      coverImage {\n        ...,\n        "blurHash": asset->metadata.blurHash,\n        "lqip": asset->metadata.lqip,\n      }\n    }\n  }\n}\n': WORK_QUERYResult;
+    '\n*[_type == "project"] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  overview,\n  coverImage {\n    ...,\n    "blurHash": asset->metadata.blurHash,\n    "lqip": asset->metadata.lqip,\n  }\n}\n': PROJECTS_QUERYResult;
+    '\n*[_type == "project"] | order(_createdAt desc) {\n  slug\n}\n': PROJECTS_SLUGS_QUERYResult;
+    '\n*[_type == "project" && slug.current == $slug][0] {\n  _id,\n  title,\n  slug,\n  overview,\n  bannerImage {\n    ...,\n    "blurHash": asset->metadata.blurHash,\n    "lqip": asset->metadata.lqip,\n  },\n  sections[] {\n    ...,\n    _type == "gallerySection" => {\n      ...,\n      images[] {\n        ...,\n        "blurHash": asset->metadata.blurHash,\n        "lqip": asset->metadata.lqip,\n      }\n    }\n  }\n}\n': PROJECT_QUERYResult;
   }
 }

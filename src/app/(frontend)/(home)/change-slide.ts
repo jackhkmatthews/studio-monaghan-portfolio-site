@@ -1,7 +1,7 @@
 export function changeSlide(
   scrollContainer: HTMLElement | null,
   direction: "up" | "down",
-  slides: number | undefined
+  slides: number | undefined,
 ) {
   if (!scrollContainer || !slides) return;
   const scrollHeight = scrollContainer.scrollHeight;

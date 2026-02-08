@@ -26,7 +26,7 @@ export default async function HomeLayout({
         className={cn(
           abc_otto_variable_trial.variable,
           annexxus_demo.variable,
-          `antialiased h-full min-h-dvh flex flex-col gap-12 lg:gap-16 bg-gray-brand overflow-y-scroll snap-y snap-mandatory relative overscroll-none`
+          `antialiased h-full min-h-dvh flex flex-col gap-12 lg:gap-16 bg-gray-brand overflow-y-scroll snap-y snap-mandatory relative overscroll-none`,
         )}
       >
         {children}

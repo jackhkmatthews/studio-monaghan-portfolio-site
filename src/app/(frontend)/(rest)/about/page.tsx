@@ -24,7 +24,7 @@ export default async function AboutPage() {
       <footer
         className={cn(
           textClasses.portableTextFooter,
-          "col-span-full max-w-prose lg:col-start-2 pb-6 lg:pb-10"
+          "col-span-full max-w-prose lg:col-start-2 pb-6 lg:pb-10",
         )}
         style={{ lineHeight: "1" }}
       >

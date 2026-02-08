@@ -26,7 +26,7 @@ export default async function RestLayout({
         className={cn(
           abc_otto_variable_trial.variable,
           annexxus_demo.variable,
-          `antialiased flex flex-col gap-12 lg:gap-16 bg-gray-brand`
+          `antialiased flex flex-col gap-12 lg:gap-16 bg-gray-brand`,
         )}
       >
         <Header />

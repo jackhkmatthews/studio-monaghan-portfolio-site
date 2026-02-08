@@ -61,8 +61,7 @@ export const projectType = defineType({
     defineField({
       name: "bannerImage",
       title: "Banner Image",
-      description:
-        "Used on project page as the banner image.",
+      description: "Used on project page as the banner image.",
       type: "image",
       options: {
         hotspot: true,

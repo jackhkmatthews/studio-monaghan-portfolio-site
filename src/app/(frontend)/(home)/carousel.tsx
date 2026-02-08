@@ -28,7 +28,7 @@ export function Carousel({
     <ul
       className={cn(
         "flex overflow-y-scroll snap-y snap-mandatory [scrollbar-width:none] flex-col",
-        className
+        className,
       )}
       {...rest}
     >
@@ -47,7 +47,7 @@ export function Carousel({
             <figcaption
               className={cn(
                 textClasses.body,
-                "absolute left-8 bottom-8 text-white"
+                "absolute left-8 bottom-8 text-white",
               )}
             >
               {image.project?.label && (

@@ -1,30 +1,10 @@
-import { sanityFetch } from "@/sanity/lib/live";
-import { WORK_QUERY as WORK_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
-import { cn } from "@/lib/utils";
+import { cn, getDimensions } from "@/lib/utils";
 import Link from "next/link";
 import { ClientImage } from "@/components/client-image";
 import { getImageDimensions } from "@sanity/asset-utils";
 import type { WORK_QUERYResult } from "@/sanity/types";
-
-function getDimensions(
-  aspectRatio: number,
-  maxWidth: number,
-  maxHeight: number,
-) {
-  // Try fitting to max width first
-  let width = maxWidth;
-  let height = Math.floor(maxWidth / aspectRatio);
-
-  // If height exceeds max, scale down to fit max height
-  if (height > maxHeight) {
-    height = maxHeight;
-    width = Math.floor(maxHeight * aspectRatio);
-  }
-
-  return { width, height };
-}
 
 type ProjectRow = NonNullable<
   NonNullable<WORK_QUERYResult>["projectRows"]
@@ -71,7 +51,7 @@ function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-function TwoProjectRow({ projects }: { projects: Project[] }) {
+export function TwoProjectRow({ projects }: { projects: Project[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-0">
       {projects.map((project) => (
@@ -83,7 +63,7 @@ function TwoProjectRow({ projects }: { projects: Project[] }) {
   );
 }
 
-function ThreeProjectRow({
+export function ThreeProjectRow({
   projects,
   layout = "equal",
 }: {
@@ -111,34 +91,5 @@ function ThreeProjectRow({
         <ProjectCard project={projects[2]} />
       </div>
     </div>
-  );
-}
-
-export default async function WorkPage() {
-  const { data: workData } = await sanityFetch({ query: WORK_QUERY });
-  const projectRows = workData?.projectRows || [];
-
-  return (
-    <main className="flex flex-col gap-6 flex-1 px-4 pb-8 lg:pb-10 lg:px-8">
-      {projectRows && projectRows.length > 0 && (
-        <div className="flex flex-col gap-2">
-          {projectRows.map((row, index: number) => {
-            const { projects, layout } = row;
-
-            if (!projects || projects.length === 0) return null;
-
-            return (
-              <div key={`row-${index}`}>
-                {projects.length === 2 ? (
-                  <TwoProjectRow projects={projects} />
-                ) : projects.length === 3 ? (
-                  <ThreeProjectRow projects={projects} layout={layout} />
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </main>
   );
 }

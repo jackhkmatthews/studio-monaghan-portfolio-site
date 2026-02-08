@@ -15,7 +15,7 @@ export async function Header({
     <header
       className={cn(
         "px-4 pt-4 md:pt-6 lg:pt-8 flex justify-between items-baseline gap-4 lg:px-8 z-10 w-full",
-        className
+        className,
       )}
       {...props}
     >
@@ -23,7 +23,7 @@ export async function Header({
         href="/"
         className={cn(
           textClasses.wordMark,
-          isWhite && "text-white transition-colors"
+          isWhite && "text-white transition-colors",
         )}
         style={{ lineHeight: "1" }}
       >
@@ -37,7 +37,7 @@ export async function Header({
               className={cn(
                 textClasses.navLink,
                 isWhite && "text-white",
-                "hover:underline underline-offset-3 transition-colors"
+                "hover:underline underline-offset-3 transition-colors",
               )}
               href="/work"
             >
@@ -49,7 +49,7 @@ export async function Header({
               className={cn(
                 textClasses.navLink,
                 isWhite && "text-white",
-                "hover:underline underline-offset-3 transition-colors"
+                "hover:underline underline-offset-3 transition-colors",
               )}
               href="/about"
             >

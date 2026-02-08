@@ -26,15 +26,18 @@ export const ABOUT_QUERY = defineQuery(`
 export const WORK_QUERY = defineQuery(`
 *[_type == "work"][0] {
   ...,
-  projects[]-> {
-    _id,
-    title,
-    slug,
-    overview,
-    coverImage {
-      ...,
-      "blurHash": asset->metadata.blurHash,
-      "lqip": asset->metadata.lqip,
+  projectRows[] {
+    layout,
+    projects[]-> {
+      _id,
+      title,
+      slug,
+      overview,
+      coverImage {
+        ...,
+        "blurHash": asset->metadata.blurHash,
+        "lqip": asset->metadata.lqip,
+      }
     }
   }
 }

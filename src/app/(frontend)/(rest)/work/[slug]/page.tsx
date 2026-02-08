@@ -2,7 +2,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { PROJECT_QUERY, PROJECTS_SLUGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
-import { getImageDimensions } from '@sanity/asset-utils';
+import { getImageDimensions } from "@sanity/asset-utils";
 import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
@@ -35,18 +35,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
-      <h1 className={cn(textClasses.h1, "px-4 lg:px-8")}>
-        {project.title}
-      </h1>
-
+      <h1 className={cn(textClasses.h1, "px-4 lg:px-8")}>{project.title}</h1>
 
       {project.bannerImage && (
         <ClientImage
           className="w-full object-cover aspect-square md:aspect-video lg:aspect-[3/1] max-h-[50vh]"
           src={urlFor(project.bannerImage).url()}
           alt={project.bannerImage?.alt || project.title || ""}
-          width={getImageDimensions(project.bannerImage.asset?._ref || "").width}
-          height={getImageDimensions(project.bannerImage.asset?._ref || "").height}
+          width={
+            getImageDimensions(project.bannerImage.asset?._ref || "").width
+          }
+          height={
+            getImageDimensions(project.bannerImage.asset?._ref || "").height
+          }
           sizes="100vw"
           placeholder={
             project.bannerImage.lqip
@@ -55,7 +56,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           }
         />
       )}
-
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
         <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-4 lg:px-8 grid-cols-4">
@@ -67,10 +67,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               const count = images.length;
               const orientation = section.orientation || "landscape";
               const twoImagePosition = section.twoImagePosition || "center";
-              
+
               let aspectRatio = 0;
               let width = 0;
-              
+
               // Calculate aspect ratio based on count and orientation
               if (count === 1) {
                 // 1 full width image
@@ -85,12 +85,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 aspectRatio = orientation === "portrait" ? 3 / 4 : 4 / 3;
                 width = 1000;
               }
-              
+
               const height = Math.floor(width / aspectRatio);
-              
+
               // Wrap gallery section in a subgrid container to ensure it's on its own row
               return (
-                <div key={key} className="col-span-full grid grid-cols-subgrid gap-y-2">
+                <div
+                  key={key}
+                  className="col-span-full grid grid-cols-subgrid gap-y-2"
+                >
                   {images.map((img, index) => {
                     if (!img || !img.asset) return null;
                     const url = urlFor(img)
@@ -102,7 +105,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     // Determine column positioning
                     let colSpan = "col-span-full";
                     let colStart = "";
-                    
+
                     if (count === 1) {
                       colSpan = "col-span-full";
                     } else if (count === 2) {
@@ -144,7 +147,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   key={key}
                   className={cn(
                     textClasses.portableText,
-                    "col-span-full lg:col-span-2 lg:col-start-3 max-w-prose"
+                    "col-span-full lg:col-span-2 lg:col-start-3 max-w-prose",
                   )}
                 >
                   <PortableText

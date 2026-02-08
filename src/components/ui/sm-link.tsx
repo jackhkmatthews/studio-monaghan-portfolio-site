@@ -26,7 +26,7 @@ const linkVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 function SMLink({

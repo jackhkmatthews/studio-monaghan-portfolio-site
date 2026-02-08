@@ -23,13 +23,13 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
           S.document()
             .schemaType("settings")
             .documentId("settings")
-            .title("Settings")
+            .title("Settings"),
         )
         .icon(CogIcon),
       S.listItem()
         .title("About")
         .child(
-          S.document().schemaType("about").documentId("about").title("About")
+          S.document().schemaType("about").documentId("about").title("About"),
         )
         .icon(DocumentTextIcon),
       S.listItem()
@@ -38,11 +38,6 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
         .icon(DocumentTextIcon),
       S.listItem()
         .title("Work")
-        .child(
-          S.document()
-            .schemaType("work")
-            .documentId("work")
-            .title("Work")
-        )
+        .child(S.document().schemaType("work").documentId("work").title("Work"))
         .icon(ProjectsIcon),
     ]);

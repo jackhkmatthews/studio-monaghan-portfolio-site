@@ -82,21 +82,24 @@ export const gallerySection = defineType({
     },
     prepare({ images, orientation, twoImagePosition }) {
       const imagesArray = images.filter(Boolean);
-      const orientationLabel = orientation === "portrait" ? "Portrait" : "Landscape";
-      
+      const orientationLabel =
+        orientation === "portrait" ? "Portrait" : "Landscape";
+
       let layoutInfo = "";
       if (images.length === 4) {
         layoutInfo = "4-up split";
       } else if (images.length === 2) {
-        const positionLabel = 
-          twoImagePosition === "left" ? "Left aligned" :
-          twoImagePosition === "right" ? "Right aligned" :
-          "Centered";
+        const positionLabel =
+          twoImagePosition === "left"
+            ? "Left aligned"
+            : twoImagePosition === "right"
+              ? "Right aligned"
+              : "Centered";
         layoutInfo = `2-up split - ${positionLabel}`;
       } else if (images.length === 1) {
         layoutInfo = "Single image";
       }
-      
+
       return {
         title: `Gallery (${images.length} image${images.length === 1 ? "" : "s"}) - ${orientationLabel}`,
         subtitle: layoutInfo,

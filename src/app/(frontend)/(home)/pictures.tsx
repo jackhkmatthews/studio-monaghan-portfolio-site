@@ -58,7 +58,7 @@ export function Pictures({
               className={cn(
                 textClasses.body,
                 "absolute left-0 bottom-8 text-white px-4 lg:px-8 transition-opacity",
-                isScrolling ? "opacity-0 duration-75" : "duration-500"
+                isScrolling ? "opacity-0 duration-75" : "duration-500",
               )}
             >
               {image.project?.label && (
