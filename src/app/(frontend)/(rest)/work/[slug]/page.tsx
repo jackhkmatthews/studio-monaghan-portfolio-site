@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
 import { notFound } from "next/navigation";
-import { ClientImage } from "@/components/client-image";
+import { ImageLightbox } from "@/components/image-lightbox";
 import { client } from "@/sanity/lib/client";
+import { ClientImage } from "@/components/client-image";
 
 export async function generateStaticParams() {
   const items = await client.fetch(PROJECTS_SLUGS_QUERY);
@@ -124,7 +125,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     }
 
                     return (
-                      <ClientImage
+                      <ImageLightbox
                         key={img._key}
                         src={url}
                         alt={img?.alt || project.title || ""}
@@ -132,7 +133,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                         height={height}
                         placeholder={
                           img.lqip
-                            ? `data:image/${img.lqip.split("data:image/")[1]}`
+                            ? (`data:image/${img.lqip.split("data:image/")[1]}` as const)
                             : "empty"
                         }
                         className={cn("w-full", colSpan, colStart)}
