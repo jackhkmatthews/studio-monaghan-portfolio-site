@@ -62,54 +62,82 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {project.sections.map((section) => {
             const key = section._key;
             // Gallery section
-            // TODO: be oppionated about the image aspect ratios
             if (section && section._type === "gallerySection") {
               const images = section.images || [];
               const count = images.length;
+              const orientation = section.orientation || "landscape";
+              const twoImagePosition = section.twoImagePosition || "center";
+              
               let aspectRatio = 0;
               let width = 0;
+              
+              // Calculate aspect ratio based on count and orientation
               if (count === 1) {
                 // 1 full width image
-                aspectRatio = 2 / 1;
+                aspectRatio = orientation === "portrait" ? 3 / 4 : 2 / 1;
                 width = 3000;
               } else if (count === 2) {
                 // 2 images side by side
-                aspectRatio = 3 / 2;
+                aspectRatio = orientation === "portrait" ? 2 / 3 : 3 / 2;
                 width = 1500;
               } else {
-                // 4 images side by side
-                aspectRatio = 2 / 3;
+                // 4 images in grid
+                aspectRatio = orientation === "portrait" ? 3 / 4 : 4 / 3;
                 width = 1000;
               }
+              
               const height = Math.floor(width / aspectRatio);
-              return images.map((img) => {
-                if (!img || !img.asset) return null;
-                const url = urlFor(img)
-                  .width(width)
-                  .height(height)
-                  .auto("format")
-                  .url();
+              
+              // Wrap gallery section in a subgrid container to ensure it's on its own row
+              return (
+                <div key={key} className="col-span-full grid grid-cols-subgrid gap-y-2">
+                  {images.map((img, index) => {
+                    if (!img || !img.asset) return null;
+                    const url = urlFor(img)
+                      .width(width)
+                      .height(height)
+                      .auto("format")
+                      .url();
 
-                return (
-                  <ClientImage
-                    key={img._key}
-                    src={url}
-                    alt={img?.alt || project.title || ""}
-                    width={width}
-                    height={height}
-                    placeholder={
-                      img.lqip
-                        ? `data:image/${img.lqip.split("data:image/")[1]}`
-                        : "empty"
+                    // Determine column positioning
+                    let colSpan = "col-span-full";
+                    let colStart = "";
+                    
+                    if (count === 1) {
+                      colSpan = "col-span-full";
+                    } else if (count === 2) {
+                      if (twoImagePosition === "left") {
+                        colSpan = "col-span-2 md:col-span-1";
+                        // Images will naturally flow left
+                      } else if (twoImagePosition === "right") {
+                        colSpan = "col-span-2 md:col-span-1";
+                        colStart = index === 0 ? "md:col-start-3" : "";
+                      } else {
+                        // center - use full width 2-column layout
+                        colSpan = "col-span-2";
+                      }
+                    } else if (count === 4) {
+                      colSpan = "col-span-2 md:col-span-1";
                     }
-                    className={cn("w-full", {
-                      "col-span-full": images.length === 1,
-                      "col-span-2": images.length === 2,
-                      "col-span-1": images.length === 4,
-                    })}
-                  />
-                );
-              });
+
+                    return (
+                      <ClientImage
+                        key={img._key}
+                        src={url}
+                        alt={img?.alt || project.title || ""}
+                        width={width}
+                        height={height}
+                        placeholder={
+                          img.lqip
+                            ? `data:image/${img.lqip.split("data:image/")[1]}`
+                            : "empty"
+                        }
+                        className={cn("w-full", colSpan, colStart)}
+                      />
+                    );
+                  })}
+                </div>
+              );
             } else if (section._type === "textBlock") {
               return (
                 <div

@@ -185,6 +185,8 @@ export type GallerySection = {
     _type: "image";
     _key: string;
   }>;
+  orientation?: "landscape" | "portrait";
+  twoImagePosition?: "left" | "center" | "right";
 };
 
 export type Link = {
@@ -486,6 +488,8 @@ export type PROJECT_QUERYResult = {
       blurHash: string | null;
       lqip: string | null;
     }> | null;
+    orientation?: "landscape" | "portrait";
+    twoImagePosition?: "center" | "left" | "right";
   } | {
     content?: BlockContent;
     _type: "textBlock";
