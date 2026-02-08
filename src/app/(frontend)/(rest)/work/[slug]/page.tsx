@@ -39,7 +39,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {project.bannerImage && (
         <ClientImage
-          className="w-full object-cover aspect-square md:aspect-video lg:aspect-[3/1] max-h-[50vh]"
+          className="w-full object-cover aspect-square md:aspect-video lg:aspect-[3/1] max-h-[50vh] px-1"
           src={urlFor(project.bannerImage).url()}
           alt={project.bannerImage?.alt || project.title || ""}
           width={

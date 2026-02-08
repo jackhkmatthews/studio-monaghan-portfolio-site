@@ -5,13 +5,19 @@ import Link from "next/link";
 import { ClientImage } from "@/components/client-image";
 import { getImageDimensions } from "@sanity/asset-utils";
 import type { WORK_QUERYResult } from "@/sanity/types";
+import { ComponentProps } from "react";
+import { ctaClasses } from "@/styles/ctaClasses";
 
 type ProjectRow = NonNullable<
   NonNullable<WORK_QUERYResult>["projectRows"]
 >[number];
 type Project = NonNullable<ProjectRow["projects"]>[number];
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({
+  project,
+  className,
+  ...props
+}: ComponentProps<"article"> & { project: Project }) {
   const dims = getImageDimensions(project.coverImage?.asset?._ref || "");
   const { width, height } = getDimensions(1.2, dims.width, dims.height);
   const url = urlFor(project.coverImage || {})
@@ -21,10 +27,16 @@ function ProjectCard({ project }: { project: Project }) {
     .url();
 
   return (
-    <article className="flex flex-col gap-0 items-start relative h-full">
+    <article
+      className={cn(
+        "flex flex-col gap-0 items-start relative h-full bg-white",
+        className,
+      )}
+      {...props}
+    >
       {project.coverImage && (
         <ClientImage
-          className="w-full h-auto"
+          className="w-full h-auto min-h-full hover:opacity-90 transition-opacity"
           placeholder={
             project.coverImage.lqip
               ? `data:image/${project.coverImage.lqip.split("data:image/")[1]}`
@@ -41,11 +53,10 @@ function ProjectCard({ project }: { project: Project }) {
         href={`/work/${project.slug?.current}`}
         className={cn(
           textClasses.body,
-          "underline-offset-4 hover:underline absolute bottom-0 left-0 bg-gray-brand pr-1 right-0 pb-2",
+          "text-white absolute inset-0 flex items-end p-2 bg-transparent hover:bg-white/5 transition-colors",
         )}
       >
         {project.title}
-        <span className="absolute inset-0 block" />
       </Link>
     </article>
   );
@@ -53,11 +64,13 @@ function ProjectCard({ project }: { project: Project }) {
 
 export function TwoProjectRow({ projects }: { projects: Project[] }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-0">
+    <div className="col-span-full grid-cols-subgrid grid gap-[inherit]">
       {projects.map((project) => (
-        <div key={project._id}>
-          <ProjectCard project={project} />
-        </div>
+        <ProjectCard
+          project={project}
+          key={project._id}
+          className="sm:col-span-3"
+        />
       ))}
     </div>
   );
@@ -70,23 +83,30 @@ export function ThreeProjectRow({
   projects: Project[];
   layout?: ProjectRow["layout"];
 }) {
-  const layoutClasses = {
-    equal: "md:grid-cols-2",
-    left: "md:grid-cols-[2fr_1fr]",
-    right: "md:grid-cols-[1fr_2fr]",
-  };
-
   const actualLayout = layout || "equal";
 
   return (
-    <div
-      className={cn(
-        "grid grid-cols-1 gap-x-2 gap-y-0",
-        layoutClasses[actualLayout],
-      )}
-    >
-      <ProjectCard project={projects[0]} />
-      <div className="flex flex-col gap-2">
+    <div className={cn("grid grid-cols-subgrid col-span-full gap-[inherit]")}>
+      <ProjectCard
+        project={projects[0]}
+        className={cn(
+          actualLayout === "left"
+            ? "sm:col-span-4"
+            : actualLayout === "right"
+              ? "sm:col-span-4"
+              : "sm:col-span-3",
+        )}
+      />
+      <div
+        className={cn(
+          "flex flex-col gap-2",
+          actualLayout === "left"
+            ? "sm:col-span-2"
+            : actualLayout === "right"
+              ? "sm:col-span-2"
+              : "sm:col-span-3",
+        )}
+      >
         <ProjectCard project={projects[1]} />
         <ProjectCard project={projects[2]} />
       </div>

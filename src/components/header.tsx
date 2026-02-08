@@ -4,6 +4,7 @@ import { textClasses } from "@/styles/textClasses";
 import { ComponentProps } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
 import { SETTINGS_QUERY } from "@/sanity/queries";
+import { ctaClasses } from "@/styles/ctaClasses";
 
 export async function Header({
   className,
@@ -36,8 +37,8 @@ export async function Header({
             <Link
               className={cn(
                 textClasses.navLink,
+                ctaClasses.navLink,
                 isWhite && "text-white",
-                "hover:underline underline-offset-3 transition-colors",
               )}
               href="/work"
             >
