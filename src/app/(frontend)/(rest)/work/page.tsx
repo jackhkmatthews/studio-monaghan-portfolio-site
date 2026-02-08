@@ -1,5 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { PROJECTS_QUERY } from "@/sanity/queries";
+import { WORK_QUERY as WORK_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,8 @@ function getDimensions(aspectRatio: number, maxWidth: number, maxHeight: number)
 }
 
 export default async function WorkPage() {
-  const { data: projects } = await sanityFetch({ query: PROJECTS_QUERY });
+  const { data: workData } = await sanityFetch({ query: WORK_QUERY });
+  const projects = workData?.projects || [];
 
   return (
     <main className="flex flex-col gap-6 flex-1 px-4 pb-8 lg:pb-10 lg:px-8">

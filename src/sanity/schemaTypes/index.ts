@@ -6,6 +6,7 @@ import { projectType } from "./documents/project-type";
 import { gallerySection } from "./objects/gallery-section";
 import { about } from "./singletons/about";
 import { home } from "./singletons/home";
+import { work } from "./singletons/work";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -16,5 +17,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     projectType,
     about,
     home,
+    work,
   ],
 };
