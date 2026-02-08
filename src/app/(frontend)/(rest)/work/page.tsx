@@ -8,7 +8,7 @@ export default async function WorkPage() {
   const projectRows = workData?.projectRows || [];
 
   return (
-    <main className="grid grid-cols-1 sm:grid-cols-6 gap-2 flex-1 px-2 pb-8 lg:pb-10">
+    <main className="grid grid-cols-1 sm:grid-cols-6 gap-1 flex-1 px-1 pb-8 lg:pb-10">
       {projectRows.map((row, index: number) => {
         const { projects, layout } = row;
 

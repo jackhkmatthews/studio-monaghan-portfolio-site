@@ -46,9 +46,7 @@ export function Pictures({
       {images?.map((image, index) => {
         return (
           <figure
-            className={cn(
-              "w-full basis-full shrink-0 relative snap-center outline-4 outline-gray-brand -outline-offset-4",
-            )}
+            className={cn("w-full basis-full shrink-0 relative snap-center")}
             key={`${image._key}_${index}`}
           >
             <CarouselPicture
