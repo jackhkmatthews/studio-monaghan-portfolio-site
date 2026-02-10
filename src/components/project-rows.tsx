@@ -1,3 +1,5 @@
+"use client";
+
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
 import { cn, getDimensions } from "@/lib/utils";
@@ -5,8 +7,7 @@ import Link from "next/link";
 import { ClientImage } from "@/components/client-image";
 import { getImageDimensions } from "@sanity/asset-utils";
 import type { WORK_QUERYResult } from "@/sanity/types";
-import { ComponentProps } from "react";
-import { ctaClasses } from "@/styles/ctaClasses";
+import { ComponentProps, useState } from "react";
 
 type ProjectRow = NonNullable<
   NonNullable<WORK_QUERYResult>["projectRows"]
@@ -18,6 +19,7 @@ function ProjectCard({
   className,
   ...props
 }: ComponentProps<"article"> & { project: Project }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const dims = getImageDimensions(project.coverImage?.asset?._ref || "");
   const { width, height } = getDimensions(1.2, dims.width, dims.height);
   const url = urlFor(project.coverImage || {})
@@ -29,31 +31,46 @@ function ProjectCard({
   return (
     <article
       className={cn(
-        "flex flex-col gap-0 items-start relative h-full bg-white",
+        "flex flex-col gap-0 items-start relative h-full",
         className,
       )}
+      // style={{ boxShadow: "inset 0 0 0 1px rgba(0, 0, 0, 0.4)" }}
       {...props}
     >
       {project.coverImage && (
-        <ClientImage
-          className="w-full h-auto min-h-full hover:opacity-90 transition-opacity"
-          placeholder={
-            project.coverImage.lqip
-              ? `data:image/${project.coverImage.lqip.split("data:image/")[1]}`
-              : "empty"
-          }
-          src={url}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          alt={project.coverImage.alt || ""}
-          width={width}
-          height={height}
-        />
+        <>
+          <ClientImage
+            className="w-full h-auto min-h-full hover:opacity-90 transition-opacity"
+            placeholder={
+              project.coverImage.lqip
+                ? `data:image/${project.coverImage.lqip.split("data:image/")[1]}`
+                : "empty"
+            }
+            src={url}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            alt={project.coverImage.alt || ""}
+            width={width}
+            height={height}
+            onLoad={() => setImageLoaded(true)}
+          />
+          <div
+            className={cn(
+              "absolute inset-0 pointer-events-none transition-opacity",
+              imageLoaded ? "opacity-100" : "opacity-0",
+            )}
+            style={{
+              background:
+                "linear-gradient(55deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%)",
+            }}
+          />
+        </>
       )}
       <Link
         href={`/work/${project.slug?.current}`}
         className={cn(
           textClasses.body,
           "text-white absolute inset-0 flex items-end p-2 bg-transparent hover:bg-white/5 transition-colors",
+          !imageLoaded && "opacity-0",
         )}
       >
         {project.title}
@@ -99,7 +116,7 @@ export function ThreeProjectRow({
       />
       <div
         className={cn(
-          "flex flex-col gap-2",
+          "flex flex-col gap-1",
           actualLayout === "left"
             ? "sm:col-span-2"
             : actualLayout === "right"
