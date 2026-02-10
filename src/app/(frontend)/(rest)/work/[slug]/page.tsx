@@ -2,14 +2,13 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { PROJECT_QUERY, PROJECTS_SLUGS_QUERY } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
-import { getImageDimensions } from "@sanity/asset-utils";
 import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
 import { notFound } from "next/navigation";
-import { ImageLightbox } from "@/components/image-lightbox";
 import { client } from "@/sanity/lib/client";
 import { ClientImage } from "@/components/client-image";
+import { BannerPicture } from "@/components/banner-picture";
 
 export async function generateStaticParams() {
   const items = await client.fetch(PROJECTS_SLUGS_QUERY);
@@ -39,22 +38,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <h1 className={cn(textClasses.h1, "px-4 lg:px-8")}>{project.title}</h1>
 
       {project.bannerImage && (
-        <ClientImage
-          className="w-full object-cover aspect-square md:aspect-video lg:aspect-[3/1] max-h-[50vh] px-1"
-          src={urlFor(project.bannerImage).url()}
+        <BannerPicture
+          className="px-1"
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          image={project.bannerImage as any}
           alt={project.bannerImage?.alt || project.title || ""}
-          width={
-            getImageDimensions(project.bannerImage.asset?._ref || "").width
-          }
-          height={
-            getImageDimensions(project.bannerImage.asset?._ref || "").height
-          }
-          sizes="100vw"
-          placeholder={
-            project.bannerImage.lqip
-              ? `data:image/${project.bannerImage.lqip.split("data:image/")[1]}`
-              : "empty"
-          }
+          lqip={project.bannerImage.lqip || undefined}
         />
       )}
 

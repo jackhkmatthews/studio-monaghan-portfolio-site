@@ -1,3 +1,5 @@
+import { urlFor } from "@/sanity/lib/image";
+import { SanityImageSource } from "@sanity/image-url";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -21,4 +23,18 @@ export function getDimensions(
   }
 
   return { width, height };
+}
+
+
+
+export function buildSrcSet(
+  image: SanityImageSource,
+  width: number,
+  height: number,
+): string {
+  const url = (w: number, h: number) =>
+    urlFor(image).width(w).height(h).fit("crop").auto("format").url();
+  return [`${url(width, height)} 1x`, `${url(width * 2, height * 2)} 2x`].join(
+    ", ",
+  );
 }

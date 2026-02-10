@@ -39,7 +39,6 @@ export function CarouselPicture({
     src: urlFor(image || {})
       .width(1000)
       .height(1000)
-      .crop("center")
       .fit("crop")
       .url(),
   });
@@ -52,7 +51,6 @@ export function CarouselPicture({
     src: urlFor(image || {})
       .width(750)
       .height(1334)
-      .crop("center")
       .fit("crop")
       .url(),
   };

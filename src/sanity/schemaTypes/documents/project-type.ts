@@ -1,5 +1,6 @@
 import { DocumentIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
+import { BANNER_HOTSPOT_PREVIEWS } from "@/lib/image-sizes";
 
 export const projectType = defineType({
   name: "project",
@@ -64,7 +65,9 @@ export const projectType = defineType({
       description: "Used on project page as the banner image.",
       type: "image",
       options: {
-        hotspot: true,
+        hotspot: {
+          previews: [...BANNER_HOTSPOT_PREVIEWS],
+        },
       },
       validation: (rule) =>
         rule.custom((value, context) => {
