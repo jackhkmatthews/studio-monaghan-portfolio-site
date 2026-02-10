@@ -68,10 +68,7 @@ export function CarouselPicture({
       <source media="(width >= 750px)" srcSet={desktop} />
       <ClientImage
         {...mobileImgProps}
-        className={cn(
-          "object-cover w-full h-dvh border-4 border-solid border-gray-brand",
-          imageClassName,
-        )}
+        className={cn("object-cover w-full h-dvh", imageClassName)}
       />
     </picture>
   );
