@@ -125,7 +125,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     }
 
                     return (
-                      <ImageLightbox
+                      <ClientImage
                         key={img._key}
                         src={url}
                         alt={img?.alt || project.title || ""}
