@@ -1,5 +1,9 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { PROJECT_QUERY, PROJECTS_SLUGS_QUERY } from "@/sanity/queries";
+import {
+  PROJECT_QUERY,
+  PROJECTS_SLUGS_QUERY,
+  WORK_QUERY,
+} from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
 import { cn } from "@/lib/utils";
@@ -9,6 +13,7 @@ import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { ClientImage } from "@/components/client-image";
 import { BannerPicture } from "@/components/banner-picture";
+import { ProjectCard, type Project } from "@/components/project-rows";
 
 export async function generateStaticParams() {
   const items = await client.fetch(PROJECTS_SLUGS_QUERY);
@@ -32,6 +37,22 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (!project) {
     notFound();
   }
+
+  // Fetch all projects to find the next one
+  const { data: workData } = await sanityFetch({ query: WORK_QUERY });
+  const projectRows = workData?.projectRows || [];
+
+  // Flatten all projects into a single array
+  const allProjects: Project[] = projectRows.flatMap(
+    (row) => row.projects || [],
+  );
+
+  // Find current project index and get next project
+  const currentIndex = allProjects.findIndex((p) => p.slug?.current === slug);
+  const nextProject =
+    currentIndex !== -1 && allProjects.length > 0
+      ? allProjects[(currentIndex + 1) % allProjects.length]
+      : null;
 
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
@@ -150,6 +171,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               return null;
             }
           })}
+          {nextProject && (
+            <div className="flex flex-col gap-4 pt-8 lg:pt-20 col-span-4 md:col-span-2 xl:col-span-1">
+              <h2 className={textClasses.h3}>Next project</h2>
+              <ProjectCard project={nextProject} />
+            </div>
+          )}
         </div>
       )}
     </main>

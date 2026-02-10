@@ -12,9 +12,9 @@ import { ComponentProps, useState } from "react";
 type ProjectRow = NonNullable<
   NonNullable<WORK_QUERYResult>["projectRows"]
 >[number];
-type Project = NonNullable<ProjectRow["projects"]>[number];
+export type Project = NonNullable<ProjectRow["projects"]>[number];
 
-function ProjectCard({
+export function ProjectCard({
   project,
   className,
   ...props
@@ -34,7 +34,6 @@ function ProjectCard({
         "flex flex-col gap-0 items-start relative h-full",
         className,
       )}
-      // style={{ boxShadow: "inset 0 0 0 1px rgba(0, 0, 0, 0.4)" }}
       {...props}
     >
       {project.coverImage && (
