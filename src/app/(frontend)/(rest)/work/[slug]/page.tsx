@@ -47,11 +47,17 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     (row) => row.projects || [],
   );
 
-  // Find current project index and get next project
+  // Find current project index and get next/previous projects
   const currentIndex = allProjects.findIndex((p) => p.slug?.current === slug);
   const nextProject =
     currentIndex !== -1 && allProjects.length > 0
       ? allProjects[(currentIndex + 1) % allProjects.length]
+      : null;
+  const previousProject =
+    currentIndex !== -1 && allProjects.length > 0
+      ? allProjects[
+          (currentIndex - 1 + allProjects.length) % allProjects.length
+        ]
       : null;
 
   return (
@@ -60,7 +66,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {project.bannerImage && (
         <BannerPicture
-          className="px-1"
+          className="px-4 lg:px-8"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           image={project.bannerImage as any}
           alt={project.bannerImage?.alt || project.title || ""}
@@ -158,7 +164,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   key={key}
                   className={cn(
                     textClasses.portableText,
-                    "col-span-full lg:col-span-2 lg:col-start-3 max-w-prose",
+                    "col-span-full lg:col-span-2 lg:col-start-3",
                   )}
                 >
                   <PortableText
@@ -171,10 +177,23 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               return null;
             }
           })}
-          {nextProject && (
-            <div className="flex flex-col gap-4 pt-8 lg:pt-20 col-span-4 md:col-span-2 xl:col-span-1">
-              <h2 className={textClasses.h3}>Next project</h2>
-              <ProjectCard project={nextProject} />
+          {(previousProject || nextProject) && (
+            <div className="col-span-full grid grid-cols-subgrid pt-8 lg:pt-20 gap-4">
+              <h2
+                className={cn(textClasses.h3, "col-span-full lg:col-start-3")}
+              >
+                Explore more projects
+              </h2>
+              {previousProject && (
+                <div className="flex flex-col gap-1 col-span-4 sm:col-span-2 md:col-span-1 lg:col-start-3">
+                  <ProjectCard project={previousProject} />
+                </div>
+              )}
+              {nextProject && (
+                <div className="flex flex-col gap-1 col-span-4 sm:col-span-2 md:col-span-1">
+                  <ProjectCard project={nextProject} />
+                </div>
+              )}
             </div>
           )}
         </div>
