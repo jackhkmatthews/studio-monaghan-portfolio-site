@@ -62,8 +62,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
-      <h1 className={cn(textClasses.h1, "px-4 lg:px-8")}>{project.title}</h1>
-
       {project.bannerImage && (
         <BannerPicture
           className="px-4 lg:px-8"
@@ -76,6 +74,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
         <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-4 lg:px-8 grid-cols-4">
+          <h1
+            className={cn(
+              textClasses.h1,
+              "col-span-full lg:col-start-1 lg:col-span-2",
+            )}
+          >
+            {project.title}
+          </h1>
           {project.sections.map((section) => {
             const key = section._key;
             // Gallery section
