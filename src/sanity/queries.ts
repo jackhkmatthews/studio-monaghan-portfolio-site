@@ -69,6 +69,7 @@ export const PROJECT_QUERY = defineQuery(`
   title,
   slug,
   overview,
+  showBannerImage,
   bannerImage {
     ...,
     "blurHash": asset->metadata.blurHash,

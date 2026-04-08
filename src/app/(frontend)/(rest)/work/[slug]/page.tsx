@@ -111,9 +111,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       }, -1)
     : -1;
 
+  console.log(project.showBannerImage);
+
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
-      {project.bannerImage && (
+      {project.showBannerImage !== false && project.bannerImage && (
         <BannerPicture
           className="px-4 lg:px-8"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

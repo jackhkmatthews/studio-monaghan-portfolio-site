@@ -86,6 +86,17 @@ export const projectType = defineType({
       ],
     }),
     defineField({
+      name: "showBannerImage",
+      title: "Show banner image",
+      description:
+        "Turn off to hide the banner on the project page without removing the image.",
+      type: "boolean",
+      initialValue: true,
+      options: {
+        layout: "switch",
+      },
+    }),
+    defineField({
       name: "sections",
       title: "Content Sections",
       description:

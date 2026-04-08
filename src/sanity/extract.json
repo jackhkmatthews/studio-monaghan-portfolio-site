@@ -930,6 +930,13 @@
         },
         "optional": true
       },
+      "showBannerImage": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
+      },
       "sections": {
         "type": "objectAttribute",
         "value": {
