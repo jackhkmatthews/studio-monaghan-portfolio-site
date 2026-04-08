@@ -198,7 +198,9 @@ export type GallerySection = {
     _key: string;
   }>;
   orientation?: "landscape" | "portrait";
+  oneImagePosition?: "center" | "left" | "right";
   twoImagePosition?: "left" | "center" | "right";
+  fourImagePosition?: "center" | "left" | "right";
 };
 
 export type Link = {
@@ -525,7 +527,9 @@ export type PROJECT_QUERYResult = {
           lqip: string | null;
         }> | null;
         orientation?: "landscape" | "portrait";
+        oneImagePosition?: "center" | "left" | "right";
         twoImagePosition?: "center" | "left" | "right";
+        fourImagePosition?: "center" | "left" | "right";
       }
     | {
         content?: BlockContent;

@@ -58,6 +58,23 @@ export const gallerySection = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "oneImagePosition",
+      title: "1-Image Position",
+      type: "string",
+      description:
+        "Where the image sits in the 4-column layout (full width, or the left or right half)",
+      options: {
+        list: [
+          { title: "Center (4 columns in 4-column grid)", value: "center" },
+          { title: "Left (2 columns in 4-column grid)", value: "left" },
+          { title: "Right (2 columns in 4-column grid)", value: "right" },
+        ],
+        layout: "dropdown",
+      },
+      initialValue: "center",
+      hidden: ({ parent }) => parent?.images?.length !== 1,
+    }),
+    defineField({
       name: "twoImagePosition",
       title: "2-Image Position",
       type: "string",
@@ -73,35 +90,62 @@ export const gallerySection = defineType({
       initialValue: "center",
       hidden: ({ parent }) => parent?.images?.length !== 2,
     }),
+    defineField({
+      name: "fourImagePosition",
+      title: "4-Image Position",
+      type: "string",
+      description:
+        "Where the 2×2 grid sits in the 4-column layout (full width, or the left or right half)",
+      options: {
+        list: [
+          { title: "Center (4 columns in 4-column grid)", value: "center" },
+          { title: "Left (2 columns in 4-column grid)", value: "left" },
+          { title: "Right (2 columns in 4-column grid)", value: "right" },
+        ],
+        layout: "dropdown",
+      },
+      initialValue: "center",
+      hidden: ({ parent }) => parent?.images?.length !== 4,
+    }),
   ],
   preview: {
     select: {
       images: "images",
       orientation: "orientation",
+      oneImagePosition: "oneImagePosition",
       twoImagePosition: "twoImagePosition",
+      fourImagePosition: "fourImagePosition",
     },
-    prepare({ images, orientation, twoImagePosition }) {
-      const imagesArray = images.filter(Boolean);
+    prepare({
+      images,
+      orientation,
+      oneImagePosition,
+      twoImagePosition,
+      fourImagePosition,
+    }) {
+      const imagesArray = (images || []).filter(Boolean);
       const orientationLabel =
         orientation === "portrait" ? "Portrait" : "Landscape";
 
+      const positionLabel = (value: string | undefined) =>
+        value === "left"
+          ? "Left"
+          : value === "right"
+            ? "Right"
+            : "Center";
+
+      const count = imagesArray.length;
       let layoutInfo = "";
-      if (images.length === 4) {
-        layoutInfo = "4-up split";
-      } else if (images.length === 2) {
-        const positionLabel =
-          twoImagePosition === "left"
-            ? "Left aligned"
-            : twoImagePosition === "right"
-              ? "Right aligned"
-              : "Centered";
-        layoutInfo = `2-up split - ${positionLabel}`;
-      } else if (images.length === 1) {
-        layoutInfo = "Single image";
+      if (count === 4) {
+        layoutInfo = `4-up split — ${positionLabel(fourImagePosition)}`;
+      } else if (count === 2) {
+        layoutInfo = `2-up split — ${positionLabel(twoImagePosition)}`;
+      } else if (count === 1) {
+        layoutInfo = `Single image — ${positionLabel(oneImagePosition)}`;
       }
 
       return {
-        title: `Gallery (${images.length} image${images.length === 1 ? "" : "s"}) - ${orientationLabel}`,
+        title: `Gallery (${count} image${count === 1 ? "" : "s"}) - ${orientationLabel}`,
         subtitle: layoutInfo,
         media: imagesArray[0],
       };

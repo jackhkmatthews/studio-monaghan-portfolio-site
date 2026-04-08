@@ -6,7 +6,6 @@ import {
 } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
-import { ctaClasses } from "@/styles/ctaClasses";
 import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
@@ -111,8 +110,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       }, -1)
     : -1;
 
-  console.log(project.showBannerImage);
-
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
       {project.showBannerImage !== false && project.bannerImage && (
@@ -143,6 +140,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               const count = images.length;
               const orientation = section.orientation || "landscape";
               const twoImagePosition = section.twoImagePosition || "center";
+              const oneImagePosition = section.oneImagePosition || "center";
+              const fourImagePosition = section.fourImagePosition || "center";
 
               let aspectRatio = 0;
               let width = 0;
@@ -157,64 +156,111 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 aspectRatio = orientation === "portrait" ? 2 / 3 : 3 / 2;
                 width = 1500;
               } else {
-                // 4 images in grid
+                // 4 images in one row (inner grid)
                 aspectRatio = orientation === "portrait" ? 3 / 4 : 4 / 3;
                 width = 1000;
               }
 
               const height = Math.floor(width / aspectRatio);
 
-              // Wrap gallery section in a subgrid container to ensure it's on its own row
+              // Wrap gallery section in a subgrid container to ensure it's on its own row.
+              // Four-image galleries use a nested row: all 4 images share one row; the row
+              // spans the full 4 columns (center) or left/right 2 columns on lg+.
               return (
                 <div
                   key={key}
                   className="col-span-full grid grid-cols-subgrid gap-y-2"
                 >
-                  {images.map((img, index) => {
-                    if (!img || !img.asset) return null;
-                    const url = urlFor(img)
-                      .width(width)
-                      .height(height)
-                      .auto("format")
-                      .url();
+                  {count === 4 ? (
+                    <div
+                      className={cn(
+                        "col-span-full grid grid-cols-4 gap-x-2 lg:gap-x-4 gap-y-2",
+                        fourImagePosition === "left" &&
+                          "lg:col-span-2 lg:col-start-1",
+                        fourImagePosition === "right" &&
+                          "lg:col-span-2 lg:col-start-3",
+                      )}
+                    >
+                      {images.map((img) => {
+                        if (!img || !img.asset) return null;
+                        const url = urlFor(img)
+                          .width(width)
+                          .height(height)
+                          .auto("format")
+                          .url();
 
-                    // Determine column positioning
-                    let colSpan = "col-span-full";
-                    let colStart = "";
+                        return (
+                          <ClientImage
+                            key={img._key}
+                            src={url}
+                            alt={img?.alt || project.title || ""}
+                            width={width}
+                            height={height}
+                            placeholder={
+                              img.lqip
+                                ? (`data:image/${img.lqip.split("data:image/")[1]}` as const)
+                                : "empty"
+                            }
+                            className="w-full min-w-0"
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    images.map((img, index) => {
+                      if (!img || !img.asset) return null;
+                      const url = urlFor(img)
+                        .width(width)
+                        .height(height)
+                        .auto("format")
+                        .url();
 
-                    if (count === 1) {
-                      colSpan = "col-span-full";
-                    } else if (count === 2) {
-                      if (twoImagePosition === "left") {
-                        colSpan = "col-span-2 md:col-span-1";
-                        // Images will naturally flow left
-                      } else if (twoImagePosition === "right") {
-                        colSpan = "col-span-2 md:col-span-1";
-                        colStart = index === 0 ? "md:col-start-3" : "";
-                      } else {
-                        // center - use full width 2-column layout
-                        colSpan = "col-span-2";
-                      }
-                    } else if (count === 4) {
-                      colSpan = "col-span-2 md:col-span-1";
-                    }
+                      // Determine column positioning (4-col parent grid; subgrid inherits it).
+                      // oneImagePosition: left | right use the corresponding two columns on lg+;
+                      // mobile uses full width.
+                      let colSpan = "col-span-full";
+                      let colStart = "";
 
-                    return (
-                      <ClientImage
-                        key={img._key}
-                        src={url}
-                        alt={img?.alt || project.title || ""}
-                        width={width}
-                        height={height}
-                        placeholder={
-                          img.lqip
-                            ? (`data:image/${img.lqip.split("data:image/")[1]}` as const)
-                            : "empty"
+                      if (count === 1) {
+                        if (oneImagePosition === "left") {
+                          colSpan =
+                            "col-span-full lg:col-span-2 lg:col-start-1";
+                        } else if (oneImagePosition === "right") {
+                          colSpan =
+                            "col-span-full lg:col-span-2 lg:col-start-3";
+                        } else {
+                          colSpan = "col-span-full";
                         }
-                        className={cn("w-full", colSpan, colStart)}
-                      />
-                    );
-                  })}
+                      } else {
+                        if (twoImagePosition === "left") {
+                          colSpan = "col-span-2 md:col-span-1";
+                          // Images will naturally flow left
+                        } else if (twoImagePosition === "right") {
+                          colSpan = "col-span-2 md:col-span-1";
+                          colStart = index === 0 ? "md:col-start-3" : "";
+                        } else {
+                          // center - use full width 2-column layout
+                          colSpan = "col-span-2";
+                        }
+                      }
+
+                      return (
+                        <ClientImage
+                          key={img._key}
+                          src={url}
+                          alt={img?.alt || project.title || ""}
+                          width={width}
+                          height={height}
+                          placeholder={
+                            img.lqip
+                              ? (`data:image/${img.lqip.split("data:image/")[1]}` as const)
+                              : "empty"
+                          }
+                          className={cn("w-full", colSpan, colStart)}
+                        />
+                      );
+                    })
+                  )}
                 </div>
               );
             } else if (section._type === "textBlock") {
