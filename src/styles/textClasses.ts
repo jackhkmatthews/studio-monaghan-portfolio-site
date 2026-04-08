@@ -1,10 +1,10 @@
 // Fonts change at lg breakpoint
 
 export const textClasses = {
-  wordMark: "font-serif text-2xl lg:text-3xl font-normal leading-none",
+  wordMark: "font-serif text-2xl lg:text-3xl font-medium leading-none",
   h1: "font-serif text-lg font-bold lg:text-2xl",
   h3: "font-serif text-base font-bold lg:text-xl",
-  navLink: "font-serif text-lg lg:text-xl",
+  navLink: "font-serif text-lg lg:text-xl font-normal",
   body: "font-serif text-base lg:text-xl",
   portableText: "prose font-serif prose-a:font-normal max-w-[50ch]",
   portableTextFooter:
