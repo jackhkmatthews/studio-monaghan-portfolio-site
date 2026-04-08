@@ -6,6 +6,7 @@ import {
 } from "@/sanity/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { textClasses } from "@/styles/textClasses";
+import { ctaClasses } from "@/styles/ctaClasses";
 import { cn } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import { components } from "@/sanity/lib/portable-text-components";
@@ -13,7 +14,11 @@ import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { ClientImage } from "@/components/client-image";
 import { BannerPicture } from "@/components/banner-picture";
-import { ProjectCard, type Project } from "@/components/project-rows";
+import type { Project } from "@/components/project-rows";
+import Link from "next/link";
+import { getImageDimensions } from "@sanity/asset-utils";
+import { getDimensions } from "@/lib/utils";
+import { ComponentProps } from "react";
 
 export async function generateStaticParams() {
   const items = await client.fetch(PROJECTS_SLUGS_QUERY);
@@ -25,6 +30,46 @@ export async function generateStaticParams() {
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
+}
+
+function ProjectCard({
+  project,
+  title,
+  className,
+  ...props
+}: ComponentProps<"div"> & { project: Project; title: string }) {
+  const href = `/work/${project.slug?.current}`;
+  const dims = getImageDimensions(project.coverImage?.asset?._ref || "");
+  const { width, height } = getDimensions(1.2, dims.width, dims.height);
+  const url = urlFor(project.coverImage || {})
+    .height(height)
+    .width(width)
+    .auto("format")
+    .url();
+
+  return (
+    <div className={cn("flex flex-col gap-2 relative", className)} {...props}>
+      <Link href={href} className={cn(textClasses.h4, "hover:opacity-80")}>
+        {title}
+        <span className="absolute inset-0" />
+      </Link>
+      {project.coverImage && (
+        <ClientImage
+          className="w-full h-auto hover:opacity-90 transition-opacity"
+          placeholder={
+            project.coverImage.lqip
+              ? `data:image/${project.coverImage.lqip.split("data:image/")[1]}`
+              : "empty"
+          }
+          src={url}
+          sizes="(max-width: 768px) 100vw, 25vw"
+          alt={project.coverImage.alt || project.title || ""}
+          width={width}
+          height={height}
+        />
+      )}
+    </div>
+  );
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
@@ -60,6 +105,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         ]
       : null;
 
+  const lastTextBlockIndex = Array.isArray(project.sections)
+    ? project.sections.reduce<number>((last, s, i) => {
+        return s?._type === "textBlock" ? i : last;
+      }, -1)
+    : -1;
+
   return (
     <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
       {project.bannerImage && (
@@ -82,7 +133,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           >
             {project.title}
           </h1>
-          {project.sections.map((section) => {
+          {project.sections.map((section, sectionIndex) => {
             const key = section._key;
             // Gallery section
             if (section && section._type === "gallerySection") {
@@ -165,6 +216,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 </div>
               );
             } else if (section._type === "textBlock") {
+              const isLastTextBlock = sectionIndex === lastTextBlockIndex;
               return (
                 <div
                   key={key}
@@ -177,6 +229,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     value={section.content || []}
                     components={components}
                   />
+                  {isLastTextBlock && (
+                    <Link
+                      href="mailto:mail@studiomonaghan.com"
+                      className="mt-8"
+                    >
+                      → Get in touch about a project
+                    </Link>
+                  )}
                 </div>
               );
             } else {
@@ -185,20 +245,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           })}
           {(previousProject || nextProject) && (
             <div className="col-span-full grid grid-cols-subgrid pt-8 lg:pt-20 gap-4">
-              <h2
-                className={cn(textClasses.h3, "col-span-full lg:col-start-3")}
-              >
-                Explore more projects
-              </h2>
               {previousProject && (
-                <div className="flex flex-col gap-1 col-span-4 sm:col-span-2 md:col-span-1 lg:col-start-3">
-                  <ProjectCard project={previousProject} />
-                </div>
+                <ProjectCard
+                  title={`Previous Project: ${previousProject.title || ""}`}
+                  className="col-span-2 justify-end lg:col-span-1"
+                  project={previousProject}
+                />
               )}
               {nextProject && (
-                <div className="flex flex-col gap-1 col-span-4 sm:col-span-2 md:col-span-1">
-                  <ProjectCard project={nextProject} />
-                </div>
+                <ProjectCard
+                  title={`Next Project: ${nextProject.title || ""}`}
+                  className="col-span-2 justify-end lg:col-span-1 lg:col-start-4"
+                  project={nextProject}
+                />
               )}
             </div>
           )}

@@ -9,7 +9,7 @@ export default async function AboutPage() {
   const { data: about } = await sanityFetch({ query: ABOUT_QUERY });
 
   return (
-    <main className="gap-10 flex-1 grid grid-cols-1 px-4 lg:px-8 lg:grid-cols-[1fr_1fr] pb-8 lg:pb-10 lg:gap-x-20">
+    <main className="gap-12 lg:gap-18 flex-1 grid grid-cols-1 px-4 lg:px-8 lg:grid-cols-[1fr_1fr] pb-8 lg:pb-10 lg:gap-x-20">
       {about?.section?.map((section) => (
         <section
           key={section._key}
