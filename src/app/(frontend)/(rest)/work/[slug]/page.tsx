@@ -123,11 +123,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       )}
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
-        <div className="grid gap-x-2 lg:gap-x-4 gap-y-10 lg:gap-y-12 px-4 lg:px-8 grid-cols-4">
+        <div className="grid gap-x-2 lg:gap-x-4 gap-y-8 px-4 lg:px-8 grid-cols-4">
           <h1
             className={cn(
               textClasses.h1,
-              "col-span-full lg:col-start-1 lg:col-span-2",
+              "col-span-full lg:col-start-1 lg:col-span-2 lg:py-8",
             )}
           >
             {project.title}
@@ -279,7 +279,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   key={key}
                   className={cn(
                     textClasses.portableText,
-                    "col-span-full lg:col-span-2 lg:col-start-3",
+                    "col-span-full lg:col-span-2 lg:col-start-3 py-8 nth-[2]:pt-0 nth-[2]:lg:pt-8",
                   )}
                 >
                   <PortableText
