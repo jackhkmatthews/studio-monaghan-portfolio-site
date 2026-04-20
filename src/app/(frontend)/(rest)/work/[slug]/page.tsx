@@ -39,7 +39,7 @@ function ProjectCard({
 }: ComponentProps<"div"> & { project: Project; title: string }) {
   const href = `/work/${project.slug?.current}`;
   const dims = getImageDimensions(project.coverImage?.asset?._ref || "");
-  const { width, height } = getDimensions(1.2, dims.width, dims.height);
+  const { width, height } = getDimensions(1.5, dims.width, dims.height);
   const url = urlFor(project.coverImage || {})
     .height(height)
     .width(width)
@@ -111,7 +111,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     : -1;
 
   return (
-    <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-8">
+    <main className="flex flex-col gap-8 flex-1 pb-8 lg:pb-10 lg:gap-12">
       {project.showBannerImage !== false && project.bannerImage && (
         <BannerPicture
           className="px-4 lg:px-8"
@@ -123,7 +123,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       )}
 
       {Array.isArray(project.sections) && project.sections.length > 0 && (
-        <div className="grid gap-x-2 lg:gap-x-4 gap-y-6 lg:gap-y-8 px-4 lg:px-8 grid-cols-4">
+        <div className="grid gap-x-2 lg:gap-x-4 gap-y-10 lg:gap-y-12 px-4 lg:px-8 grid-cols-4">
           <h1
             className={cn(
               textClasses.h1,
@@ -150,7 +150,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               if (count === 1) {
                 // 1 image — left/right positions occupy 2 columns (like a 2-image gallery),
                 // so match that aspect ratio; center spans full width.
-                if (oneImagePosition === "left" || oneImagePosition === "right") {
+                if (
+                  oneImagePosition === "left" ||
+                  oneImagePosition === "right"
+                ) {
                   aspectRatio = orientation === "portrait" ? 2 / 3 : 3 / 2;
                   width = 1500;
                 } else {
@@ -302,14 +305,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               {previousProject && (
                 <ProjectCard
                   title={`Previous Project: ${previousProject.title || ""}`}
-                  className="col-span-2 justify-end lg:col-span-1"
+                  className="col-span-2 justify-end md:col-span-1"
                   project={previousProject}
                 />
               )}
               {nextProject && (
                 <ProjectCard
                   title={`Next Project: ${nextProject.title || ""}`}
-                  className="col-span-2 justify-end lg:col-span-1 lg:col-start-4"
+                  className="col-span-2 justify-end md:col-span-1 md:col-start-4"
                   project={nextProject}
                 />
               )}

@@ -7,7 +7,7 @@ export const textClasses = {
   h4: "font-serif text-base font-medium",
   navLink: "font-serif text-sm md:text-base lg:text-xl font-normal",
   body: "font-serif text-base lg:text-xl",
-  portableText: "prose font-serif prose-a:font-normal max-w-[50ch] tracking-tight underline-offset-4",
+  portableText: "prose font-serif prose-a:font-normal max-w-[50ch] tracking-tight underline-offset-4 xl:prose-lg",
   portableTextFooter:
     "text-xs prose-sm font-serif leading-none prose-a:font-normal",
 } as const;
