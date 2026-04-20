@@ -148,9 +148,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
               // Calculate aspect ratio based on count and orientation
               if (count === 1) {
-                // 1 full width image
-                aspectRatio = orientation === "portrait" ? 3 / 4 : 2 / 1;
-                width = 3000;
+                // 1 image — left/right positions occupy 2 columns (like a 2-image gallery),
+                // so match that aspect ratio; center spans full width.
+                if (oneImagePosition === "left" || oneImagePosition === "right") {
+                  aspectRatio = orientation === "portrait" ? 2 / 3 : 3 / 2;
+                  width = 1500;
+                } else {
+                  aspectRatio = orientation === "portrait" ? 3 / 4 : 2 / 1;
+                  width = 3000;
+                }
               } else if (count === 2) {
                 // 2 images side by side
                 aspectRatio = orientation === "portrait" ? 2 / 3 : 3 / 2;
